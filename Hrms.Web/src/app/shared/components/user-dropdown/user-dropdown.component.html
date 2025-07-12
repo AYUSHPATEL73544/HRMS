@@ -1,0 +1,29 @@
+<button type="button" mat-button [matMenuTriggerFor]="accountNav" class="dropdown-trigger">
+    <img [src]="imageModel.imageUrl" alt="user" class="circle profile-pic"  *ngIf="imageModel!=null; else noImage"/>
+    <ng-template #noImage>
+       <img src="assets/images/male_avatar.jpg" alt="user" class="circle profile-pic" />
+    </ng-template>
+</button>
+<mat-menu #accountNav="matMenu">
+    <span mat-menu-item class="dropdown-user" *ngIf="model">
+        <div class="dw-user-box">
+            <div class="u-text">
+                <h4 class="name">{{model.firstName}} {{model.lastName}}</h4>
+                <div class="email">
+                    <label>{{model.email}}</label>
+                </div>
+                <a class="waves-effect waves-light btn-small blue white-text" *ngIf="userDrop === constants.Roles.Employee" [routerLink]="['/employee/profile']"
+                    [routerLinkActive]="['active']">
+                    My Profile
+                </a>
+            </div>
+        </div>
+    </span>
+    <mat-divider></mat-divider>
+    <a mat-menu-item (click)="changePassword()">
+        <mat-icon>key</mat-icon>Change Password
+    </a>
+    <a mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon> Logout
+    </a>
+</mat-menu>

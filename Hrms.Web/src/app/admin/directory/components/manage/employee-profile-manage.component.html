@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <div class="heading font-weight-bold pb-3">Employee Details</div>
+  <mat-card>
+    <section>
+      <div class="col-12">
+        <mat-tab-group mat-stretch-tabs [animationDuration]="0"  [selectedIndex]="selectedTabIndex"
+        (selectedTabChange)="onTabChanged($event)">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Personal</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 0">
+              <app-personal-detail #personal></app-personal-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Work</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 1">
+              <app-work-detail #work></app-work-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Team</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 2">
+              <app-team-detail #team></app-team-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Education</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 3">
+              <app-education-detail #education></app-education-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Family</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 4">
+              <app-family-detail #family></app-family-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Admin Note</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 5">
+              <app-note-detail #note></app-note-detail>
+            </ng-container>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </section>
+  </mat-card>
+</div>

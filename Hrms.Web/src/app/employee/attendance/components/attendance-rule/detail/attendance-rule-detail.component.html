@@ -1,0 +1,110 @@
+<div class="container-fluid">
+    <div class="heading font-weight-bold pb-3">Attendance Rule Details</div>
+    <mat-card>
+        <section *blockUI="'attendance-blockui'">
+            <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+                <div class="col-12 pb-3">
+                    <div class="row">
+                        <div class="col-6 pt-3">
+                            <p class="sub-heading">Overview</p>
+                        </div>
+                        <div class="col-4 pt-3">
+                          <mat-form-field>
+                            <mat-select name="year" placeholder="Select year" appNumberOnly #year="ngModel" [(ngModel)]="model.year"
+                            (selectionChange)="getRuleByYear(model.year)">
+                                <mat-option [value]="year.key" *ngFor="let year of years">{{year.value}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <mat-label>First Day of Week</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{startDay}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Last Day of Week</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{endDay}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pb-3">
+                    <div class="row">
+                        <div class="col-8 pt-3">
+                            <p class="sub-heading">Timing</p>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="col-12 pt-3">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <mat-label>In Time</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.inTime}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Grace In Time</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{graceInTime}} m</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Out Time</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.outTime}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Grace Out Time</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{graceOutTime}} m</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pb-3">
+                    <div class="row">
+                        <div class="col-8 pt-3">
+                            <p class="sub-heading">Work Duration</p>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="col-12 pt-3">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <mat-label>First Half</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.firstHalfStart}} -
+                                {{model.firstHalfEnd}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>First Half Duration</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{totalFirstHalfDuration}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Second Half</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.secondHalfStart}} -
+                                {{model.secondHalfEnd}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Second Half Duration</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{totalSecondHalfDuration}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Total Break Duration</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.totalBreakDuration}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Number of Breaks</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.numberOfBreak}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pt-3">
+                    <div class="text-right">
+                        <button mat-stroked-button [routerLink]="['/employee/attendance']" [queryParams]="{t: 1}">
+                            <mat-icon>arrow_back_los_new</mat-icon>Back
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </mat-card>
+</div>

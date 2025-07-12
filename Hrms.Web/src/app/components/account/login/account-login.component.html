@@ -1,0 +1,51 @@
+<div class="auth-wrapper d-flex no-block justify-content-center align-items-center"
+    style="background: url('/assets/images/auth-bg.jpg') no-repeat center center">
+    <div class="auth-box" *blockUI="'container-blockui'">
+        <div id="loginform">
+            <div class="logo">
+                <h5 class="font-medium m-b-20 mt-3">Sign In</h5>
+            </div>
+            <div class="row">
+                <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+                    <div class="row">
+                        <div class="col s12">
+                            <mat-form-field>
+                                <input matInput name="email" [(ngModel)]="model.email" #email="ngModel"
+                                    placeholder="Email" maxlength="50" required />
+                                <mat-error *ngIf="email.invalid">
+                                    Email is required.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col s12">
+                            <mat-form-field>
+                                <input matInput name="password" placeholder="Password" [(ngModel)]="model.password"
+                                    [type]="hidePassword ? 'password' : 'text'" maxlength="50" #password="ngModel"
+                                    required />
+                                <mat-icon matSuffix class="cursor-pointer pt-1" (click)="hidePassword = !hidePassword">
+                                    {{ hidePassword ? "visibility" : "visibility_off" }}
+                                </mat-icon>
+                                <mat-error *ngIf="password.invalid">
+                                    Password is required.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row m-t-5">
+                        <button type="button" mat-raised-button class="btn-large sign-in-with-microsoft-btn"
+                            (click)="signInWithMicrosoft()">
+                            <span>Sign in with Microsoft</span>
+                        </button>
+                    </div>
+                    <div class="row m-t-40">
+                        <div class="col s12">
+                            <button type="submit" mat-raised-button class="w100 btn-large">
+                                <mat-icon>login</mat-icon> Login
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

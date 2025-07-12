@@ -1,0 +1,43 @@
+<section *blockUI="'blockui-LogReject'">
+    <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2 pt-4">{{ title }}</span>
+        </div>
+        <div class="col-2" align="end">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6 pt-3">
+            <mat-label>Start Day</mat-label>
+            <div class="font-weight-bold pt-1">{{ model.startDate | date }}</div>
+        </div>
+        <div class="col-6 pt-3">
+            <mat-label>End Date</mat-label>
+            <div class="font-weight-bold pt-1">{{ model.endDate | date }}</div>
+        </div>
+        <div class="col-6 pt-3">
+            <mat-label>Applied On</mat-label>
+            <div class="font-weight-bold pt-1">{{ model.createdOn | date }}</div>
+        </div>
+        <div class="col-6 pt-3">
+            <mat-label>Days</mat-label>
+            <div class="font-weight-bold pt-1">
+                <div *ngIf="model.days <= 1">{{ model.days }} day</div>
+                <div *ngIf="model.days > 1">{{ model.days }} days</div>
+            </div>
+        </div>
+        <div class="col-6 pt-3">
+            <mat-label>Purpose</mat-label>
+            <div class="font-weight-bold pt-1">{{ model.purpose }}</div>
+        </div>
+        <div class="col-6 pt-3">
+            <mat-label>Rejection Reason</mat-label>
+            <div class="font-weight-bold pt-1">{{ model.rejectionReason }}</div>
+        </div>
+    </div>
+</section>

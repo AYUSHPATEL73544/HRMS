@@ -1,0 +1,163 @@
+<section *blockUI="'team-blockui'">
+    <div class="col-12 pb-3 pt-2">
+        <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+            <div class="row">
+                <div class="col-2 pt-3 pb-2">
+                    <p class="sub-heading mb-1 pt-2">User Role</p>
+                </div>
+                <div class="col-2 pt-4 pr-0 pl-0 pb-2" *ngIf="!isRoleAdded">
+                    {{role}}
+                </div>
+                <div class="col-1 pt-2 pl-0 pb-2 " *ngIf="!isRoleAdded">
+                    <button type="button" (click)="toggleAddRole()" mat-icon-button>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </div>
+                <div class="col-3 pt-2 pb-2" *ngIf="isRoleAdded">
+                    <mat-form-field>
+                        <mat-select name="userRole" placeholder="UserRole" [(ngModel)]="userRoleModel.roleId"
+                            #userRole="ngModel" required>
+                            <mat-option [value]="item.key" *ngFor="let item of userRoles"> {{item.value}} </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="userRole.invalid">
+                            <span *ngIf="userRole.errors?.['required']">UserRole is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-1 pt-2 pr-0" *ngIf="isRoleAdded">
+                    <button mat-icon-button type="submit" color="primary">
+                        <mat-icon>check_circle_outline</mat-icon>
+                    </button>
+                </div>
+                <div class="col-1 pt-2 pl-0" *ngIf="isRoleAdded">
+                    <button class="pl-0" mat-icon-button (click)="close()">
+                        <mat-icon> highlight_off</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <mat-divider></mat-divider>
+        <div class="row">
+            <div class="col-10 pt-3">
+                <p class="sub-heading mb-1 pt-2">Reporting Manager</p>
+            </div>
+            <div class="col-2 text-right pt-2 pb-1">
+                <button mat-raised-button color="primary" (click)="add()">
+                    Add New
+                </button>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </div>
+    <div class="col-12">
+        <table mat-table [dataSource]="model">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Name</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.managerName}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Type</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.typeName}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Department</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.department}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Designation</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.designation}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1 pl-4"><strong>Action</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button *ngIf="!element.canEdit" (click)="editManager(element.id)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="delete(element.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsForReporting"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsForReporting;"></tr>
+        </table>
+        <div class="text-muted text-center pt-3" *ngIf="model.length === 0">
+            <p>No reporting manager assigned.</p>
+        </div>
+    </div>
+
+    <div class="col-12 pb-3 pt-4">
+        <div class="row">
+            <div class="col-10 pt-3">
+                <p class="sub-heading mb-1 pt-2">Direct Reporting</p>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </div>
+    <div class="col-12">
+        <table mat-table [dataSource]="reporteesModel">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Name</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.employeeName}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Type</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.typeName}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Department</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.departmentName}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Designation</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.designationName}}
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsForDirectReporting"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsForDirectReporting;"></tr>
+        </table>
+        <div class="text-muted text-center pt-3" *ngIf="isModelLoaded && reporteesModel.length === 0">
+            <p>No reportees assigned. </p>
+        </div>
+    </div>
+    <div class="col-12 pt-3">
+        <div class="text-right">
+            <button mat-stroked-button [routerLink]="['/admin/directory']">
+                <mat-icon>arrow_back_los_new</mat-icon>Back
+            </button>
+        </div>
+    </div>
+</section>

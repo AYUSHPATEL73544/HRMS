@@ -1,0 +1,56 @@
+<section *blockUI="'employee-blockui'">
+    <div class="row">
+        <div class="col-10">
+            <p class="sub-heading mb-1"> {{title}}</p>
+        </div>
+        <div class="col-2 text-right">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+
+    <form #f="ngForm" (ngSubmit)="f.form.valid && submit()">
+        <div class="row pt-3">
+            <div class="col-6">
+                <img src="https://cdn.vectorstock.com/i/preview-1x/52/84/default-placeholder-profile-icon-vector-14065284.webp"
+                class="profile-image" *ngIf="(employeeModel.imageUrl==null && selectedImage==null);else profileImg">
+                <ng-template #profileImg >
+                    <img [src]="employeeModel.imageUrl" alt="image" class="profile-image" *ngIf="selectedImage==null;else noImage">
+                </ng-template>
+                <ng-template #noImage>
+                    <img [src]="selectedImage" alt="image" class="profile-image" >
+                </ng-template>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-12">
+                <button mat-raised-button type="button"  color="primary" (click)="imageRef.click()"
+                 *ngIf="!fileModel.id">
+                    <mat-icon>cloud_upload</mat-icon> Upload
+                </button>
+                <input type="file" class="d-none" name="profileImage" accept="image/*" #imageRef 
+                  (change)="onImageSelect($event)">
+            </div>
+            <div class="col-8" *ngIf="fileModel.name">
+                <p>{{fileModel.name}}
+                    <button type="button" mat-icon-button (click)="deleteFile();f.reset()">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </p>
+            </div>
+            <div class="col-12 pt-3 text-right">
+                <button type="button" mat-stroked-button (click)="cancel()" class="mx-2">
+                    <mat-icon>cancel</mat-icon> Cancel
+                </button>
+                <button type="submit" mat-raised-button color="primary"  *ngIf="fileModel.imageFile && fileModel.imageFile.type == fileType">
+                    <mat-icon>save</mat-icon> Save
+                </button>
+            </div>
+        </div>
+
+    </form>
+</section>

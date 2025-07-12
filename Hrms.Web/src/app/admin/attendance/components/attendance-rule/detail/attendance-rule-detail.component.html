@@ -1,0 +1,295 @@
+<div class="container-fluid">
+    <div class="heading font-weight-bold pb-3">Attendance Rule Details</div>
+    <mat-card>
+        <section *blockUI="'attendance-blockui'">
+            <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+                <div class="col-12 pb-3">
+                    <div class="row">
+                        <div class="col-4 pt-3">
+                            <p class="sub-heading">Overview</p>
+                            <p class="sub-heading">{{model.description}}</p>
+
+                        </div>
+                        <!-- <div class="col-4 pt-3">
+                            <mat-form-field>
+                                <mat-select name="year" placeholder="Select Year" appNumberOnly [(ngModel)]="model.year" #year="ngModel" 
+                                (selectionChange)="getByYear(model.year)" > 
+                                    <mat-option [value]="year.key" *ngFor="let year of years">{{year.value}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div> -->
+                        <!-- <div class="col-4 text-right pt-2">
+                            <button mat-icon-button (click)="isOverviewEditable = true;"
+                                *ngIf="!isOverviewEditable && !isTimingEditable && !isWorkDurationEditable">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button type="submit" color="primary" *ngIf="isOverviewEditable">
+                                <mat-icon>check_circle_outline</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="cancel()" *ngIf="isOverviewEditable">
+                                <mat-icon> highlight_off</mat-icon>
+                            </button>
+                        </div> -->
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="col-12" *ngIf="!isOverviewEditable">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <mat-label>First Day of Week</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{startDay}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Last Day of Week</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{endDay}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="isOverviewEditable">
+                    <div class="form-group row pt-3">
+                        <div class="col-6">
+                            <mat-form-field>
+                                <mat-select name="startDay" placeholder="First Day of Week" [(ngModel)]="model.startDay"
+                                    #startDay="ngModel" required>
+                                    <mat-option [value]="item.key"
+                                        *ngFor="let item of weekDays">{{item.value}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="startDay.invalid">
+                                    <span *ngIf="startDay.errors?.['required']">First day of week is
+                                        required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field>
+                                <mat-select name="endDay" placeholder="Last Day of Week" [(ngModel)]="model.endDay"
+                                    #endDay="ngModel" required>
+                                    <mat-option [value]="item.key"
+                                        *ngFor="let item of weekDays">{{item.value}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="endDay.invalid">
+                                    <span *ngIf="endDay.errors?.['required']">Last day of week is required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 pb-3">
+                    <div class="row">
+                        <div class="col-8 pt-3">
+                            <p class="sub-heading">Timing</p>
+                        </div>
+                        <div class="col-4 text-right pt-2">
+                            <button mat-icon-button (click)=timing()
+                                *ngIf="!isOverviewEditable && !isTimingEditable && !isWorkDurationEditable">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button type="submit" color="primary" *ngIf="isTimingEditable">
+                                <mat-icon>check_circle_outline</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="cancel()" *ngIf="isTimingEditable">
+                                <mat-icon> highlight_off</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="col-12 pt-3" *ngIf="!isTimingEditable">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <mat-label>In Time</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.inTime}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Grace In Time</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{graceInTime}} m</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Out Time</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.outTime}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Grace Out Time</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{graceOutTime}} m</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="isTimingEditable">
+                    <div class="form-group row pt-3">
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput [ngxMatTimepicker]="InTime" name="inTime" placeholder="In Time"
+                                    [(ngModel)]="model.inTime" #inTime="ngModel" (ngModelChange)="checkGraceInTime()"
+                                    readonly required>
+                                <ngx-mat-timepicker-toggle matSuffix [for]="InTime"></ngx-mat-timepicker-toggle>
+                                <ngx-mat-timepicker #InTime></ngx-mat-timepicker>
+                                <mat-error *ngIf="inTime.invalid">
+                                    <span *ngIf="inTime.errors?.['required']">In time is required.</span>
+
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput [ngxMatTimepicker]="GraceInTime" [min]="model.inTime" name="graceInTime"
+                                    placeholder="Grace InTime" [(ngModel)]="model.graceInTime" #graceInTime="ngModel"
+                                    (ngModelChange)="checkGraceInTime()" required readonly>
+                                <ngx-mat-timepicker-toggle matSuffix [for]="GraceInTime"></ngx-mat-timepicker-toggle>
+                                <ngx-mat-timepicker #GraceInTime></ngx-mat-timepicker>
+                                <mat-error *ngIf="graceInTime.invalid || isInvalidGraceInTime">
+                                    <span *ngIf="graceInTime.errors?.['required']">Grace in time is required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput [ngxMatTimepicker]="OutTime" name="outTime" placeholder="Out Time"
+                                    [(ngModel)]="model.outTime" #outTime="ngModel" (ngModelChange)="checkGraceOutTime()"
+                                    required readonly>
+                                <ngx-mat-timepicker-toggle matSuffix [for]="OutTime"></ngx-mat-timepicker-toggle>
+                                <ngx-mat-timepicker #OutTime></ngx-mat-timepicker>
+                                <mat-error *ngIf="outTime.invalid">
+                                    <span *ngIf="outTime.errors?.['required']">Out time is required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput [ngxMatTimepicker]="GraceOutTime" [min]="model.outTime"
+                                    name="graceOutTime" placeholder="Grace OutTime" [(ngModel)]="model.graceOutTime"
+                                    #graceOutTime="ngModel" (ngModelChange)="checkGraceOutTime()" required readonly>
+                                <ngx-mat-timepicker-toggle matSuffix [for]="GraceOutTime"></ngx-mat-timepicker-toggle>
+                                <ngx-mat-timepicker #GraceOutTime></ngx-mat-timepicker>
+                                <mat-error *ngIf="graceOutTime.invalid">
+                                    <span *ngIf="graceOutTime.errors?.['required']">Grace out time is required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 pb-3">
+                    <div class="row">
+                        <div class="col-8 pt-3">
+                            <p class="sub-heading">Work Duration</p>
+                        </div>
+                        <div class="col-4 text-right pt-2">
+                            <button mat-icon-button (click)="workDuration()"
+                                *ngIf="!isOverviewEditable && !isTimingEditable && !isWorkDurationEditable">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button type="submit" color="primary" *ngIf="isWorkDurationEditable">
+                                <mat-icon>check_circle_outline</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="cancel()" *ngIf="isWorkDurationEditable">
+                                <mat-icon> highlight_off</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="col-12 pt-3" *ngIf="!isWorkDurationEditable">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <mat-label>First Half</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.firstHalfStart}} -
+                                {{model.firstHalfEnd}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>First Half Duration</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{totalFirstHalfDuration}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Second Half</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.secondHalfStart}} -
+                                {{model.secondHalfEnd}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Second Half Duration</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{totalSecondHalfDuration}} </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Total Break Duration</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{totalBreakDuration}}</div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <mat-label>Number of Breaks</mat-label>
+                            <div class="font-weight-bold pt-1 cursor-pointer">{{model.numberOfBreak}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="isWorkDurationEditable">
+                    <div class="form-group row pt-3">
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput [ngxMatTimepicker]="firstStartTime" name="firstHalfStart"
+                                    placeholder="First Half Start Time" [(ngModel)]="model.firstHalfStart"
+                                    #firstHalfStart="ngModel" required readonly>
+                                <ngx-mat-timepicker-toggle matSuffix [for]="firstStartTime"></ngx-mat-timepicker-toggle>
+                                <ngx-mat-timepicker #firstStartTime></ngx-mat-timepicker>
+                                <mat-error *ngIf="firstHalfStart.invalid">
+                                    <span *ngIf="firstHalfStart.errors?.['required']">Start time is required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput [ngxMatTimepicker]="firstEndTime" [min]="model.firstHalfStart"
+                                    name="firstHalfEnd" placeholder="First Half End Time"
+                                    [(ngModel)]="model.firstHalfEnd" #firstHalfEnd="ngModel" required readonly>
+                                <ngx-mat-timepicker-toggle matSuffix [for]="firstEndTime"></ngx-mat-timepicker-toggle>
+                                <ngx-mat-timepicker #firstEndTime></ngx-mat-timepicker>
+                                <mat-error *ngIf="firstHalfEnd.invalid">
+                                    <span *ngIf="firstHalfEnd.errors?.['required']">End time is required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput [ngxMatTimepicker]="secondStartTime" name="secondHalfStart"
+                                    placeholder="Second Half Start Time" [(ngModel)]="model.secondHalfStart"
+                                    [min]="model.firstHalfEnd" #secondHalfStart="ngModel" required readonly>
+                                <ngx-mat-timepicker-toggle matSuffix
+                                    [for]="secondStartTime"></ngx-mat-timepicker-toggle>
+                                <ngx-mat-timepicker #secondStartTime></ngx-mat-timepicker>
+                                <mat-error *ngIf="secondHalfStart.invalid">
+                                    <span *ngIf="secondHalfStart.errors?.['required']">Start time is required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput [ngxMatTimepicker]="secondEndTime" [min]="model.secondHalfStart"
+                                    name="secondHalfEnd" placeholder="Second Half End Time"
+                                    [(ngModel)]="model.secondHalfEnd" #secondHalfEnd="ngModel" required readonly>
+                                <ngx-mat-timepicker-toggle matSuffix [for]="secondEndTime"></ngx-mat-timepicker-toggle>
+                                <ngx-mat-timepicker #secondEndTime></ngx-mat-timepicker>
+                                <mat-error *ngIf="secondHalfEnd.invalid">
+                                    <span *ngIf="secondHalfEnd.errors?.['required']">End time is required.</span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6">
+                            <mat-form-field>
+                                <input matInput name="totalBreak" appNumberOnly placeholder="Total Number of Breaks"
+                                    [(ngModel)]="model.numberOfBreak" #totalBreak="ngModel" maxlength="2" minlength="1"
+                                    [minNumber]="1" required>
+                                <mat-error *ngIf="f.submitted && totalBreak.invalid">
+                                    Total number of break is required.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pt-3">
+                    <div class="text-right">
+                        <button mat-stroked-button [routerLink]="['/admin/attendance']" [queryParams]="{t: 1}">
+                            <mat-icon>arrow_back_los_new</mat-icon>Back
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </mat-card>
+</div>

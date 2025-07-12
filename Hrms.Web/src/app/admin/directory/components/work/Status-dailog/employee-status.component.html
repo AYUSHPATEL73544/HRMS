@@ -1,0 +1,122 @@
+<section *blockUI="'employee-status-blockui'">
+
+  <div class="row">
+    <div class="col-10 pb-2">
+      <span class="mat-h2 pt-4">{{ title }}</span>
+    </div>
+    <div class="col-2" align="end">
+      <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+    </div>
+    <div class="col-12">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <div class="row">
+    <mat-radio-group name="exitType" [(ngModel)]="model.exitType" #exitType="ngModel" color="primary">
+      <mat-radio-button class="col-6 pt-3" *ngFor="let item of exitTypeOptions" (change)="selectChange(item.key)"
+        [value]="item.key">{{item.value}}</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <!--------------------------------------------Resignation------------------------------------>
+  <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+    <div class="row pt-2" *ngIf="isResignationSelected">
+      <div class="col-12">
+        <mat-form-field>
+          <input matInput [matDatepicker]="exit" [min]="model.dateOfJoining" name="exitDate"
+            placeholder="Resignation Date" [(ngModel)]="model.exitDate" #exitDate="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="exit">
+          </mat-datepicker-toggle>
+          <mat-error *ngIf="exitDate.invalid">
+            <span *ngIf="exitDate.errors?.['required']">Resignation date is required.</span>
+          </mat-error>
+          <mat-datepicker #exit></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+      <div class="col-12">
+        <mat-form-field>
+          <input matInput [matDatepicker]="last" [min]="model.exitDate" name="lastWorkingDay"
+            placeholder="Last Working day" [(ngModel)]="model.dateOfLeaving" #lastWorkingDay="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="last">
+          </mat-datepicker-toggle>
+          <mat-error *ngIf="lastWorkingDay.invalid">
+            <span *ngIf="lastWorkingDay.errors?.['required']">Last working date is required.</span>
+          </mat-error>
+          <mat-datepicker #last></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+      <div class="col-12">
+        <mat-form-field>
+          <input matInput name="noticePeriod" placeholder="Notice Period" [(ngModel)]="model.noticePeriod"
+            #noticePeriod="ngModel" appNumberOnly required />
+          <mat-error *ngIf="noticePeriod.invalid">
+            <span *ngIf="noticePeriod.errors?.['required']">Notice period is required.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-form-field>
+          <textarea matInput name="resignationNote" placeholder="Resignation Note" [(ngModel)]="model.note"
+            #resignationNote="ngModel" appAlphabetWithSpaceOnly required></textarea>
+          <mat-error *ngIf="resignationNote.invalid">
+            <span *ngIf="resignationNote.errors?.['required']">Resignation reason is required.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!-------------------------------------Termination----------------------------------------->
+
+    <div class="row pt-2" *ngIf="isTerminationSelected">
+      <div class="col-6">
+        <mat-form-field>
+          <input matInput [matDatepicker]="exit" [min]="model.dateOfJoining" name="exitDate"
+            placeholder="Termination Date" [(ngModel)]="model.exitDate" #exitDate="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="exit">
+          </mat-datepicker-toggle>
+          <mat-error *ngIf="exitDate.invalid">
+            <span *ngIf="exitDate.errors?.['required']">Termination date is required.</span>
+          </mat-error>
+          <mat-datepicker #exit></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+      <div class="col-6">
+        <mat-form-field>
+          <input matInput [matDatepicker]="last" [min]="model.exitDate" name="lastWorkingDay"
+            placeholder="Last Working day" [(ngModel)]="model.dateOfLeaving" #lastWorkingDay="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="last">
+          </mat-datepicker-toggle>
+          <mat-error *ngIf="lastWorkingDay.invalid">
+            <span *ngIf="lastWorkingDay.errors?.['required']">Last working date is required.</span>
+          </mat-error>
+          <mat-datepicker #last></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+      <div class="col-12">
+        <mat-form-field>
+          <textarea matInput name="terminationNote" placeholder="Termination note" [(ngModel)]="model.note"
+            #terminationNote="ngModel" appAlphabetWithSpaceOnly required></textarea>
+          <mat-error *ngIf="terminationNote.invalid || terminationNote.touched">
+            <span *ngIf="terminationNote.errors?.['required']">Termination reason is required.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-dialog-actions align="end" class="pt-3 pb-3" *ngIf="isTerminationSelected || isResignationSelected">
+      <div class="col-12">
+        <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+          <mat-icon>highlight_off</mat-icon> Cancel
+        </button>
+        <button type="submit" mat-raised-button color="primary">
+          <mat-icon>save</mat-icon> Submit
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </form>
+</section>

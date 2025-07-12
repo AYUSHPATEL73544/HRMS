@@ -1,0 +1,84 @@
+<section *blockUI="'attendance-blockui'">
+    <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2 pt-4" *ngIf="!model.id">Create New Attendance Log</span>
+            <span class="mat-h2 pt-4" *ngIf="model.id">Update Attendance Log</span>
+        </div>
+        <div class="col-2 text-right">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+        <mat-dialog-content>
+            <div class="form-group row pt-3">
+                <div class="col-6" *ngIf="!model.id">
+                    <mat-form-field>
+                        <mat-select name="employeeId" placeholder="Employee Name" [(ngModel)]="model.employeeId"
+                            #employeeId="ngModel" required>
+                            <mat-option [value]="item.key" *ngFor="let item of employees">{{item.value}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="employeeId.invalid">
+                            <span *ngIf="employeeId.errors?.['required']">Employee required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker" name="date" placeholder="Attendance Date"
+                            [(ngModel)]="model.date" #date="ngModel" [disabled]="model.id >0" required readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="date.invalid">
+                            <span *ngIf="date.errors?.['required']">Date is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput [ngxMatTimepicker]="clockInTime" name="inTime" placeholder="Clock In"
+                            [(ngModel)]="model.inTime" #inTime="ngModel" required readonly>
+                        <ngx-mat-timepicker-toggle matSuffix [for]="clockInTime"></ngx-mat-timepicker-toggle>
+                        <ngx-mat-timepicker #clockInTime></ngx-mat-timepicker>
+                        <mat-error *ngIf="inTime.invalid">
+                            <span *ngIf="inTime.errors?.['required']">Clock-In time is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput [ngxMatTimepicker]="clockOutTime" name="outTime" placeholder="Clock Out"
+                            [(ngModel)]="model.outTime" #outTime="ngModel" readonly>
+                        <ngx-mat-timepicker-toggle matSuffix [for]="clockOutTime"></ngx-mat-timepicker-toggle>
+                        <ngx-mat-timepicker #clockOutTime></ngx-mat-timepicker>
+                        <mat-hint *ngIf="isInvalidInTime" class="text-danger">Invalid inTime</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="col-12">
+                    <mat-form-field>
+                        <textarea matInput name="adminNote" placeholder="Admin Note" #adminNote="ngModel"
+                            [(ngModel)]="model.note" maxlength="250" required></textarea>
+                        <mat-error *ngIf="adminNote.invalid">
+                            <span *ngIf="adminNote.errors?.['required']">Admin note is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end" class="pt-3 pb-3">
+            <div class="col-12">
+                <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                </button>
+                <button type="submit" mat-raised-button color="primary">
+                    <mat-icon>save</mat-icon> Submit
+                </button>
+            </div>
+        </mat-dialog-actions>
+    </form>
+</section>

@@ -1,0 +1,44 @@
+<div class="container-fluid">
+    <div class="heading font-weight-bold pb-3">Attendance</div>
+    <mat-card>
+        <section>
+            <div class="col-12">
+                <mat-tab-group mat-stretch-tabs [animationDuration]="0" [selectedIndex]="selectedTabIndex"
+                    (selectedIndexChange)="onTabChanged($event)">
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <strong>Log</strong>
+                        </ng-template>
+                        <ng-container *ngIf="selectedTabIndex == 0">
+                            <app-attendance-log-detail></app-attendance-log-detail>
+                        </ng-container>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <strong>Rules</strong>
+                        </ng-template>
+                        <ng-container *ngIf="selectedTabIndex == 1">
+                            <app-attendance-rule-manage></app-attendance-rule-manage>
+                        </ng-container>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <strong>Assign Rules</strong>
+                        </ng-template>
+                        <ng-container *ngIf="selectedTabIndex == 2">
+                            <app-assign-rule-detail></app-assign-rule-detail>
+                        </ng-container>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <strong>History</strong>
+                        </ng-template>
+                        <ng-container *ngIf="selectedTabIndex == 3">
+                            <app-employee-attendance-history></app-employee-attendance-history>
+                        </ng-container>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </section>
+    </mat-card>
+</div>

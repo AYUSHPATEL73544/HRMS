@@ -1,0 +1,14 @@
+<div class="main-wrapper" id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6"
+    data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full" class="main-wrapper"
+    id="main-wrapper" [ngClass]="fullLayout ? 'vertical-full' : 'vertical-iconbar'"
+    *ngIf="isUserAthenticated else loggedOut">
+    <app-header (toggleLayout)="toggleLayout()"> </app-header>
+    <div class="page-wrapper">
+        <router-outlet></router-outlet>
+        <footer class="center-align m-b-30"> &copy; Copyrights 2019 – {{year}} LOGIMONK. All rights reserved.</footer>
+    </div>
+</div>
+
+<ng-template #loggedOut>
+    <router-outlet></router-outlet>
+</ng-template>

@@ -1,0 +1,105 @@
+/* ------------------ font -------------------*/
+.heading {
+  font-size: 20px;
+}
+
+.sub-heading {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.text-small {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.custom-font {
+  font-size: 15px;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+.text-gray {
+  color: #7a7777;
+}
+
+.text-red {
+  color: #d31717;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.active {
+  // background: linear-gradient(90deg,red 0,#f94e4e);
+  background: #283655;
+  border-radius: 50px;
+  color: #ffffff !important;
+}
+
+.mat-expansion-panel {
+  background-color: #273146;
+  color: #ffffff;
+}
+
+.social-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+.logo-dimantion {
+  width: 40px;
+}
+
+.brand-decorator {
+  color: #feb904;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.mat-subheading-1,
+.mat-typography .mat-h4,
+.mat-typography .mat-subheading-1,
+.mat-typography h4 {
+  margin: 0;
+}
+
+.change-text::before {
+  display: contents;
+  content: "Clocked In";
+}
+
+.change-text:hover::before {
+  display: contents;
+  content: "Clock Out";
+}
+
+.clock-button:hover {
+  background-color: #ffa500;
+}
+
+.mat-drawer-container {
+  background-color: transparent;
+}
+
+.mat-drawer-backdrop {
+  background-color: transparent !important;
+}
+
+.mat-drawer {
+  width: 50%;
+}
+
+.fc-event-fullwidth {
+  width: 100%;
+}
+
+.fc-event-halfwidth {
+  width: 50%;
+}

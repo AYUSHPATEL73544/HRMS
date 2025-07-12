@@ -1,0 +1,74 @@
+.navbar-header {
+    a,
+    .btn-link {
+        color: #747474;
+        text-decoration: none;
+        box-shadow: none;
+        font-size: 12px;
+    }
+}
+nav {
+    .navbar-brand {
+        margin: 31px 0px 10px;
+    }
+    ul {
+        li {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            a {
+                font-weight: 300;
+                font-size: 13px;
+                color: #333333;
+                padding-left: 0;
+                padding-right: 0;
+                border-top: 3px solid transparent;
+                &:hover {
+                    background-color: transparent;
+                    border-color: #d11a17;
+                }
+            }
+            &.active {
+                background-color: transparent;
+                a {
+                    color: #d11a17;
+                    border-color: #d11a17;
+                }
+            }
+            &.search-box {
+                a {
+                    border: none !important;
+                    &:hover {
+                        color: #d11a17;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media all and (min-width: 992px) {
+	.navbar .nav-item .dropdown-menu{ display: none; }
+    .navbar .nav-item:hover .dropdown-menu{ display: block; }
+    .navbar .nav-item:hover .dropdown-menu li{
+        padding: 0 !important;
+        width: 100%;
+    }
+    .navbar .nav-item .dropdown-menu a{
+        border-bottom: 1px solid #e8e5e5;
+        padding: 9px 16px;
+        border-top: none;
+        line-height: 19px;
+        font-weight: 400;
+        transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, height 0s, line-height 0s;
+    }
+    .navbar .nav-item .dropdown-menu a:hover{
+        background-color: #f8f8f8;
+    }
+	.navbar .nav-item .dropdown-menu{ 
+        margin-top: 0;
+        background-color: #f2efef;
+        width: 170px;
+        border-top: 3px solid #d11a17;
+        transition: opacity 0.2s ease-in;
+     }
+}

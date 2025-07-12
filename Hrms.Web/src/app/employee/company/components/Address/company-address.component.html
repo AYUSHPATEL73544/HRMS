@@ -1,0 +1,29 @@
+<section class="mt-3">
+  <div class="col-12 mt-3 mb-3">
+    <p class="sub-heading">Registered Office</p>
+    <mat-divider></mat-divider>
+  </div>
+  <div class="col-12" *ngIf="model.registeredOffice == null">
+    <div class="pt-1">No registered address found</div>
+  </div>
+  <div class="col-12" *ngIf="model.registeredOffice !== null">
+    <div class="pt-1">{{model.registeredOffice.line1}} <br> {{model.registeredOffice.line2}}
+      {{model.registeredOffice.cityName}} {{model.registeredOffice.stateName}}<br>
+      {{model.registeredOffice.pinCode}}
+    </div>
+  </div>
+
+  <div class="col-12 mt-4  mb-3">
+    <p class="sub-heading">Corporate office</p>
+    <mat-divider></mat-divider>
+  </div>
+  <div class="col-12" *ngIf="model.corporateOffice == null">
+    <div class="pt-1">No corporate address found</div>
+  </div>
+  <div class="col-12" *ngIf="model.corporateOffice !== null">
+    <div class="pt-1">{{model.corporateOffice.line1}} <br> {{model.corporateOffice.line2}}
+      {{model.corporateOffice.cityName}} {{model.corporateOffice.stateName}}<br>
+      {{model.corporateOffice.pinCode}}
+    </div>
+  </div>
+</section>

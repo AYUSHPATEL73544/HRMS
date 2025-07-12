@@ -1,0 +1,38 @@
+<section *blockUI="'blockui-note-view'">
+    
+     <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2 pt-4">Admin Note</span>
+        </div>
+        <div class="col-2 text-right">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+    </div>
+    <div class="pb-3">
+        <mat-divider></mat-divider>
+    </div>
+
+    <mat-dialog-content *ngIf = "model.note !==null">
+     <div class="row">
+            <div class="col-6 pt-0">
+                <mat-label>Clock In</mat-label>
+                <div class="font-weight-bold pt-1">{{model.inTime}}</div>
+            </div>
+            <div class="col-6 pt-0">
+                <mat-label>Clock Out</mat-label>
+                <div class="font-weight-bold pt-1">{{model.outTime }} </div>
+                <div class="font-weight-bold pt-1"  *ngIf = "model.outTime ==null">-</div>
+            </div>
+            <div class="col-6 pt-3">
+                <mat-label>Date</mat-label>
+                <div class="font-weight-bold pt-1">{{model.date | date}}</div>
+            </div>
+            <div class="col-5 pt-3 " >
+                <mat-label> Admin Note</mat-label>
+                <div class="font-weight-bold pt-1" >{{model.note}}</div>
+            </div>
+        </div>  
+    </mat-dialog-content>
+</section>
+
+

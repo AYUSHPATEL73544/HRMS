@@ -1,0 +1,382 @@
+<section class="mt-3" *blockUI="'employee-blockui'">
+  <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+    <div class="col-12 pb-3">
+      <div class="row">
+        <div class="col-8 pt-3">
+          <p class="sub-heading mb-1">Personal Info</p>
+        </div>
+        <div class="col-4 text-right">
+          <button mat-icon-button (click)="isPersonalInfoEditable = true;"
+            *ngIf="!isContactInfoEditable && !isPermanentAddressEditable && !isPersonalInfoEditable && !isCurrentAddressEditable">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button type="submit" color="primary" *ngIf="isPersonalInfoEditable">
+            <mat-icon>check_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancel()" *ngIf="isPersonalInfoEditable">
+            <mat-icon> highlight_off</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="col-12" *ngIf="!isPersonalInfoEditable">
+      <div class="mb-3 pl-3">
+        <mat-label>Name</mat-label>
+        <div class="font-weight-bold pt-1">{{model.firstName}} {{model.lastName}} </div>
+      </div>
+      <div class="row">
+        <div class="col-6 mb-3">
+          <mat-label>Date Of Birth</mat-label>
+          <div class="font-weight-bold pt-1">{{dateOfBirth | date}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Gender</mat-label>
+          <div class="font-weight-bold pt-1">{{gender}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Blood Group</mat-label>
+          <div class="font-weight-bold pt-1">{{bloodGroup}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Marital Status</mat-label>
+          <div class="font-weight-bold pt-1">{{martialStatus}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="isPersonalInfoEditable">
+      <div class="form-group row pt-3">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="firstName" appAlphabetWithSpaceOnly placeholder="First Name"
+              [(ngModel)]="model.firstName" #firstName="ngModel" required>
+            <mat-error *ngIf="firstName.invalid">
+              <span *ngIf="firstName.errors?.['required']">First name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="lastName" appAlphabetWithSpaceOnly placeholder="Last Name"
+              [(ngModel)]="model.lastName" #lastName="ngModel" required>
+            <mat-error *ngIf="lastName.invalid">
+              <span *ngIf="lastName.errors?.['required']">Last name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" name="dateOfBirth" placeholder="Date Of Birth"
+              [(ngModel)]="model.dateOfBirth" #dateOfBirth="ngModel" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="gender" placeholder="Gender" [(ngModel)]="model.gender" #gender="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of genderDropDown">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="gender.invalid">
+              <span *ngIf="gender.errors?.['required']">Gender required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="bloodGroup" placeholder="Blood Group" [(ngModel)]="model.bloodGroup"
+              #bloodGroup="ngModel">
+              <mat-option [value]="item.key" *ngFor="let item of bloodGroupDropDown">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="bloodGroup.invalid">
+              <span *ngIf="bloodGroup.errors?.['required']">Blood group is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="maritalStatus" placeholder="Marital Status" [(ngModel)]="model.maritalStatus"
+              #maritalStatus="ngModel">
+              <mat-option [value]="item.key" *ngFor="let item of maritalStatusDropDown">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="maritalStatus.invalid">
+              <span *ngIf="maritalStatus.errors?.['required']">Marital status is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 pb-3">
+      <div class="row">
+        <div class="col-8 pt-3">
+          <p class="sub-heading mb-1">Contact Info</p>
+        </div>
+        <div class="col-4 text-right">
+          <button mat-icon-button (click)="isContactInfoEditable = true;"
+            *ngIf="!isContactInfoEditable && !isPermanentAddressEditable && !isPersonalInfoEditable && !isCurrentAddressEditable">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button type="submit" color="primary" *ngIf="isContactInfoEditable">
+            <mat-icon>check_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancel()" *ngIf="isContactInfoEditable">
+            <mat-icon> highlight_off</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+    <div class="col-12" *ngIf="!isContactInfoEditable">
+      <div class="row">
+        <div class="col-6 mb-3">
+          <mat-label>Official Email</mat-label>
+          <div class="font-weight-bold pt-1">{{model.email}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Alternate Email</mat-label>
+          <div class="font-weight-bold pt-1">{{model.alternateEmail}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Phone</mat-label>
+          <div class="font-weight-bold pt-1">{{model.phone | mask: constants.phoneMask}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Alternate Phone</mat-label>
+          <div class="font-weight-bold pt-1">{{model.alternatePhone | mask: constants.phoneMask}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="isContactInfoEditable">
+      <div class="form-group row pt-3">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="officialEmailId" disabled="true" placeholder="Officail Email" [(ngModel)]="model.email"
+              #officialEmailID="ngModel" [pattern]="appUtils.emailRegexPattern" required>
+            <mat-error *ngIf="officialEmailID.invalid">
+              <span *ngIf="officialEmailID.errors?.['required']">Official email is required.</span>
+              <span *ngIf="officialEmailID.errors?.['pattern']">Invalid email address.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="personalEmailId" placeholder="Alternate Email" [(ngModel)]="model.alternateEmail"
+              #personalEmailID="ngModel" [pattern]="appUtils.emailRegexPattern">
+            <mat-error *ngIf="personalEmailID.invalid">
+              <span *ngIf="personalEmailID.errors?.['pattern']">Invalid email address.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="phone" placeholder="Phone" [(ngModel)]="model.phone" #phone="ngModel" maxlength="16"
+              minlength="10" [mask]="appUtils.phoneMask" required>
+            <mat-error *ngIf="phone.invalid">
+              <span *ngIf="phone.errors?.['required']">Phone number is required.</span>
+              <span *ngIf="phone.errors?.['minlength']">Phone number cannot be less than 10 digits. </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="alternatePhoneNumber" placeholder="Alternate Phone" [(ngModel)]="model.alternatePhone"
+              #alternatePhoneNumber="ngModel" maxlength="16" minlength="10" [mask]="appUtils.phoneMask">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 pb-3">
+      <div class="row">
+        <div class="col-8 pt-3">
+          <p class="sub-heading mb-1">Current Address</p>
+        </div>
+        <div class="col-4 text-right">
+          <button mat-icon-button (click)="currentAddressEditable()"
+            *ngIf="!isContactInfoEditable && !isPermanentAddressEditable && !isPersonalInfoEditable && !isCurrentAddressEditable">
+            <mat-icon *ngIf="model.currentAddress != null">edit</mat-icon>
+            <mat-icon *ngIf="model.currentAddress == null">add_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button type="submit" color="primary" *ngIf="isCurrentAddressEditable">
+            <mat-icon>check_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancel()" *ngIf="isCurrentAddressEditable">
+            <mat-icon> highlight_off</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="col-12 pt-1" *ngIf="!isCurrentAddressEditable && model.currentAddress !== null">
+      <div class="row">
+        <div class="col-6 mb-3">
+          <div class="pt-1">{{model.currentAddress.line1}} <br>
+            {{model.currentAddress.line2}}
+            {{model.currentAddress.cityName}} {{model.currentAddress.stateName}} {{model.currentAddress.pinCode}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="model.currentAddress == null && !isCurrentAddressEditable">
+      <div class="row">
+        <div class="col-6 pt-1">No current address found</div>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="isCurrentAddressEditable">
+      <div class="form-group row pt-3">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="currentAddressLine1" placeholder="Curren Address Line 1"
+              [(ngModel)]="addressModel.line1" #currentAddressLine1="ngModel" required>
+            <mat-error *ngIf="currentAddressLine1.invalid">
+              <span *ngIf="currentAddressLine1.errors?.['required']">Address is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="currentAddressLine2" placeholder="Current Address Line 2"
+              [(ngModel)]="addressModel.line2" #currentAddressLine2="ngModel">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="currentAddressState" placeholder="State" [(ngModel)]="addressModel.stateId"
+              #currentAddressState="ngModel" (selectionChange)="loadCities()" required>
+              <mat-option [value]="item.key" *ngFor="let item of states">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="currentAddressState.invalid">
+              <span *ngIf="currentAddressState.errors?.['required']">State name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="currentAddressCity" placeholder="City" [(ngModel)]="addressModel.cityId"
+              #currentAddressCity="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of cities"> {{item.value}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="currentAddressCity.invalid">
+              <span *ngIf="currentAddressCity.errors?.['required']">City name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="currentAddressPinCode" placeholder="Zip Code" [(ngModel)]="addressModel.pinCode"
+              #currentAddressPinCode="ngModel" maxlength="6" minlength="6" appNumberOnly required>
+            <mat-error *ngIf="currentAddressPinCode.invalid">
+              <span *ngIf="currentAddressPinCode.errors?.['required']">Zipcode is required.</span>
+              <span *ngIf="currentAddressPinCode.errors?.['minlength']">Zipcode can't less than 6.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 pb-3">
+      <div class="row">
+        <div class="col-8 pt-3">
+          <p class="sub-heading mb-1">Permanent Address</p>
+        </div>
+        <div class="col-4 text-right">
+          <button mat-icon-button (click)="permanentAddressEditable()"
+            *ngIf="!isContactInfoEditable && !isPermanentAddressEditable && !isPersonalInfoEditable && !isCurrentAddressEditable">
+            <mat-icon *ngIf="model.permanentAddress != null">edit</mat-icon>
+            <mat-icon *ngIf="model.permanentAddress == null">add_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button type="submit" color="primary" *ngIf="isPermanentAddressEditable">
+            <mat-icon>check_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancel()" *ngIf="isPermanentAddressEditable">
+            <mat-icon> highlight_off</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="col-12 pt-1" *ngIf="!isPermanentAddressEditable && model.permanentAddress !== null">
+      <div class="row">
+        <div class="col-6 mb-3">
+          <div class="pt-1">{{model.permanentAddress.line1}} <br>
+            {{model.permanentAddress.line2}}
+            {{model.permanentAddress.cityName}} {{model.permanentAddress.stateName}} {{model.permanentAddress.pinCode}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="model.permanentAddress == null && !isPermanentAddressEditable">
+      <div class="row">
+        <div class="col-6 pt-1">No permanent address found</div>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="isPermanentAddressEditable">
+      <div class="form-group row pt-3">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="permanentAddressLine1" placeholder="Address Line 1" [(ngModel)]="addressModel.line1"
+              #permanentAddressLine1="ngModel" required>
+            <mat-error *ngIf="permanentAddressLine1.invalid">
+              <span *ngIf="permanentAddressLine1.errors?.['required']">Address is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="permanentAddressLine2" placeholder="Address Line 2" [(ngModel)]="addressModel.line2"
+              #permanentAddressLine2="ngModel">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="permanentAddressState" placeholder="State" [(ngModel)]="addressModel.stateId"
+              #permanentAddressState="ngModel" (selectionChange)="loadCities()" required>
+              <mat-option [value]="item.key" *ngFor="let item of states">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="permanentAddressState.invalid">
+              <span *ngIf="permanentAddressState.errors?.['required']">State name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="permanentAddressCity" placeholder="City" [(ngModel)]="addressModel.cityId"
+              #permanentAddressCity="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of cities"> {{item.value}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="permanentAddressCity.invalid">
+              <span *ngIf="permanentAddressCity.errors?.['required']">City name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="permanentAddressPinCode" placeholder="Zip Code" [(ngModel)]="addressModel.pinCode"
+              #permanentAddressPinCode="ngModel" maxlength="6" minlength="6" appNumberOnly required>
+            <mat-error *ngIf="permanentAddressPinCode.invalid">
+              <span *ngIf="permanentAddressPinCode.errors?.['required']">Zipcode is required.</span>
+              <span *ngIf="permanentAddressPinCode.errors?.['minlength']">Zipcode can't be less than 6.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="text-right">
+        <button mat-stroked-button [routerLink]="['/admin/directory']">
+          <mat-icon>arrow_back_los_new</mat-icon>Back
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

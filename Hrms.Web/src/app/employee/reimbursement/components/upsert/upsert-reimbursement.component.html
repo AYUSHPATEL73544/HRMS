@@ -1,0 +1,88 @@
+<section *blockUI="'reimbursement-blockui'">
+  <div class="row">
+    <div class="col-10 pb-2">
+      <span class="mat-h2 pt-4">{{title}}</span>
+    </div>
+    <div class="col-2 text-right">
+      <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+
+  <form name="form" (ngSubmit)="formRef.form.valid && submit()" #formRef="ngForm" novalidate>
+    <div class="form-group row pt-3">
+      <div class="col-12">
+        <mat-form-field>
+          <input matInput name="description" placeholder="Description" [(ngModel)]="model.description"
+            #descriptionRef="ngModel" appAlphabetWithSpaceOnly required>
+          <mat-error *ngIf="descriptionRef.invalid">
+            <span *ngIf="descriptionRef.errors?.['required']">Description is required.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-6">
+        <mat-form-field>
+          <input matInput name="amount" placeholder="Amount" [(ngModel)]="model.amount" appDecimalNumberOnly
+            #amountRef="ngModel" required maxlength="8" mask="separator.2" thousandSeparator=",">
+          <span matPrefix> ₹ &nbsp; </span>
+          <mat-error *ngIf="amountRef.invalid">
+            <span *ngIf="amountRef.errors?.['required']">Amount is required.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-6">
+        <mat-form-field>
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" required name="date" [(ngModel)]="model.date" #dateRef="ngModel">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="dateRef.invalid">
+            <span *ngIf="dateRef.errors?.['required']">Date is required.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="col-12 pt-2">
+      <button type="button" mat-raised-button class="btn-lg" color="primary" matTooltip="Document"
+        (click)="documentElem.click()" *ngIf="!model.documentDetails.id">
+        <mat-icon>cloud_upload</mat-icon> Upload File
+      </button>
+      <input type="file" name="document" #document="ngModel" accept="application/pdf,image/*" class="d-none"
+        #documentElem [(ngModel)]="model.documentFile" #documentRef="ngModel" (change)="onFileSelected($event)"
+        [required]="!model.documentDetails.name">
+      <div class="row pt-3 pl-0">
+        <div *ngIf="model.documentDetails && model.documentDetails.name" class="col-8 pl-0">
+          <a (click)="viewDocument(model.documentDetails.key)"
+            class="link cursor-pointer">{{model.documentDetails.name}}</a>
+          <button type="button" mat-icon-button color="warn" class="col-2 btn-icon" (click)="deleteFile()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <mat-progress-bar mode="determinate" class="mt-2" [value]="model.documentDetails.fileUploadPercent"
+          *ngIf="model.fileUploadPercent > 0 && model.fileUploadPercent < 100">
+        </mat-progress-bar>
+      </div>
+      <mat-error *ngIf="formRef.submitted && document.invalid">
+        <span class="mat-small" *ngIf="document.errors?.['required']">Receipt is required.</span>
+      </mat-error>
+    </div>
+
+    <div [align]="'end'" class="pt-3 pb-3">
+      <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+        <mat-icon>cancel</mat-icon> Cancel
+      </button>
+      <button type="submit" mat-raised-button color="primary">
+        <mat-icon>save</mat-icon> Submit
+      </button>
+    </div>
+  </form>
+</section>

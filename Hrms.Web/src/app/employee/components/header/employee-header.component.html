@@ -1,0 +1,73 @@
+<header class="topbar" *blockUI="'header-blockui'">
+  <nav data-navbarbg="skin6">
+    <div class="nav-wrapper">
+      <a href="https://www.logimonk.com" class="brand-logo" data-logobg="skin5">
+        <span class="icon d-none">
+          <img class="logo-dimantion" src="./assets/images/company-logo.jpg" alt="">
+        </span>
+        <span class="text ml-3">
+          <h3 class="brand-decorator">LOGIMONK</h3>
+        </span>
+      </a>
+      <ul class="left">
+        <li class="hide-on-med-and-down" (click)="toggleSideBar()">
+          <a href="javascript: void(0);" class="nav-toggle">
+            <span class="bars bar1"></span>
+            <span class="bars bar2"></span>
+            <span class="bars bar3"></span>
+          </a>
+        </li>
+
+        <li class="hide-on-large-only" (click)="toggleSideBar()">
+          <a href="javascript: void(0);" class="sidebar-toggle">
+            <span class="bars bar1"></span>
+            <span class="bars bar2"></span>
+            <span class="bars bar3"></span>
+          </a>
+        </li>
+      </ul>
+      <ul class="right">
+        <li>
+          <app-user-dropdown></app-user-dropdown>
+        </li>
+      </ul>
+      <form name="form" #f="ngForm" novalidate>
+        <ul class="right pr-2">
+          <li>
+            <span>
+              <button mat-flat-button name="clockIn" ngDefaultControl color="warn" (click)="userClockIn()"
+                *ngIf="!isStart" [(ngModel)]="model.inTime" #clockIn="ngModel" required>
+                Clock In </button>
+            </span>
+            <span>
+              <button mat-flat-button name="clockOut" ngDefaultControl class="clock-button change-text" color="primary"
+                *ngIf="isStart" [(ngModel)]="model.outTime" #clockOut="ngModel" (click)="userClockOut()">
+                <span class="ml-2">
+                  <b>{{timer}}</b>
+                </span>
+              </button>
+
+            </span>
+          </li>
+        </ul>
+        <ul class="right pr-3">
+          <li>
+            <span>
+              <p class="m-0 text-small">{{day | uppercase}} {{date}}, {{month | uppercase}} {{year}}</p>
+            </span>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <span>
+              <p class="text-small"> Hello! {{employeeModel.firstName}} {{employeeModel.lastName}}</p>
+            </span>
+          </li>
+        </ul>
+      </form>
+      <ul>
+        <app-side-nav></app-side-nav>
+      </ul>
+    </div>
+  </nav>
+</header>

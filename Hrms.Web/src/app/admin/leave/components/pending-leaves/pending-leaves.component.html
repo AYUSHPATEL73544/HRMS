@@ -1,0 +1,148 @@
+<section class="pt-3 pb-3" *blockUI="'leave-log-blockui'">
+    <div class="col-12">
+        <div class="row pb-2">
+            <div class="col-sm-3 col-3">
+                <mat-form-field>
+                    <input matInput name="serachLogs" placeholder="Search Leave Logs"
+                        [(ngModel)]="filterModel.filterKey" #serachLogs="ngModel" />
+                    <mat-icon matSuffix class="cursor-pointer" (click)="resetFilterKey()"
+                        *ngIf="filterModel.filterKey">close</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-3">
+                <mat-form-field>
+                    <mat-label>Select Date Range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input name="startDate" matStartDate placeholder="Start Date"
+                            [(ngModel)]="filterModel.startDate" #startDate="ngModel">
+                        <input name="endDate" matEndDate placeholder="End Date" [(ngModel)]="filterModel.endDate"
+                            #endDate="ngModel">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5 col-7 pt-1">
+                <button (click)="getLeaveLogs()" mat-raised-button color="primary" class="mr-2">
+                    <mat-icon>search</mat-icon> Search
+                </button>
+                <button type="reset" mat-raised-button (click)="resetFilter()">
+                    <mat-icon>clear</mat-icon> Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <table mat-table [dataSource]="model" matSort matSortActive="startDate" matSortDisableClear
+            matSortDirection="asc">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1"><strong>ID</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <a [routerLink]="['/admin/leave-history', element.employeeId]"
+                        [ngClass]="element.employeeStatus==3 ? 'text-gray' : '' ">
+                        {{element.employeeCode}}
+                    </a>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1"><strong>Name</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.employeeStatus==3 ? 'text-gray' : '' ">
+                    {{ element.employeeName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="leaveType">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1"><strong>Type</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.employeeStatus==3 ? 'text-gray' : '' ">
+                    {{ element.leaveType }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="startDate">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1"><strong>Start Date</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.employeeStatus==3 ? 'text-gray' : '' ">
+                    {{ element.startDate | date }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="endDate">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1"><strong>End Date</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.employeeStatus==3 ? 'text-gray' : '' ">
+                    {{ element.endDate | date }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="days">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header class="pr-2">
+                    <span class="mat-subheading-1"><strong>Days</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" class="pr-2"
+                    [ngClass]="element.employeeStatus==3 ? 'text-gray' : '' ">
+                    <div *ngIf="element.days <= 1">{{ element.days }} day</div>
+                    <div *ngIf="element.days > 1">{{ element.days }} days</div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="createdOn">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1 ml-3"><strong>Applied On</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.employeeStatus==3 ? 'text-gray' : '' "
+                    class="pl-3 ml-3">
+                    {{element.createdOn | date}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1 ml-1">
+                        <strong>Status</strong>
+                    </span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-chip-list>
+                        <mat-chip *ngIf="element.status == '6'">Pending</mat-chip>
+                        <mat-chip *ngIf="element.status == '7'" color="accent" selected>Approved</mat-chip>
+                        <mat-chip *ngIf="element.status == '4'" color="warn" selected>Rejected</mat-chip>
+                        <mat-chip *ngIf="element.status == '3'">Deleted</mat-chip>
+                    </mat-chip-list>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef class="text-right">
+                    <span class="mat-subheading-1"><strong> Action </strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" class="text-right">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button type="submit" mat-menu-item *ngIf="element.status == 6"
+                            (click)="approve(element.id, 7, element)">
+                            Approve
+                        </button>
+                        <button type="button" mat-menu-item class="mr-2" *ngIf="element.status == 6"
+                            (click)="reject(element.id, 4)">
+                            Reject
+                        </button>
+                        <button type="button" mat-menu-item class="mr-2" (click)="viewDetails(element)">
+                            Details
+                        </button>
+                    </mat-menu>
+            </ng-container>
+
+            <tr mat-header-row mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row mat-row *matRowDef="let row; columns: columns"></tr>
+        </table>
+        <div class="text-muted text-center pt-3" *ngIf="isModelLoaded && model.length == 0">
+            <p>No pending leave record found.</p>
+        </div>
+        <mat-paginator [length]="totalCount" [pageSize]="constants.defaultPageSize"
+            [pageSizeOptions]="[10, 50, 100, 1000]" class="pt-3 mt-4">
+        </mat-paginator>
+    </div>
+</section>

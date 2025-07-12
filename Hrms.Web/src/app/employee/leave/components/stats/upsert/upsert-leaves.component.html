@@ -1,0 +1,98 @@
+<section *blockUI="'apply-leaves-blockui'">
+  <div class="row">
+    <div class="col-10 heading font-weight-bold pb-3 pl-3" *ngIf="!model.id">Apply For Leave</div>
+    <div class="col-10 heading font-weight-bold pb-3 pl-3" *ngIf="model.id">Edit Leave Log</div>
+    <div class="col-2 text-right">
+      <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-10 pb-3">
+      <span class="heading">{{leaveRuleModel.title}}</span>
+    </div>
+  </div>
+  <div class="col-12">
+    <mat-divider></mat-divider>
+  </div>
+
+  <div class="col-12 pb-3">
+    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+      <mat-dialog-content>
+        <div class="form-group row pt-3">
+          <div class="col-12 pl-0 pr-0">
+            <mat-form-field appearance="fill">
+              <mat-label>Select days</mat-label>
+              <mat-date-range-input [rangePicker]="picker" [min]="minDate" [max]="maxDate">
+                <input name="startDate" matStartDate placeholder="Start Date" [(ngModel)]="model.startDate"
+                  #startDate="ngModel" required>
+                <input name="endDate" matEndDate placeholder="End date" [(ngModel)]="model.endDate"
+                  (ngModelChange)="isEndDateSame()" #endDate="ngModel" required (dateChange)="totalLeaveCount()">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+              <mat-error *ngIf="startDate.invalid || endDate.invalid">
+                <span *ngIf="startDate.errors?.['required']">Start date is required.</span> &nbsp;
+                <span *ngIf="endDate.errors?.['required']">End date is required.</span>
+              </mat-error>
+              <mat-hint class="pb-2" *ngIf="totalLeavesCount">Total Days: {{totalLeavesCount}} </mat-hint>
+              <!-- <mat-hint class="pl-1 pb-2" *ngIf="totalLeavesCount> daysDifference && leaveRuleModel.countWeekendAsLeave && !leaveRuleModel.countHolidayAsLeave"> (Saturday and Sunday are included)
+              </mat-hint> -->
+              <mat-hint class="mx-1" *ngIf="totalLeavesCount > daysDifference && leaveRuleModel.countHolidayAsLeave && leaveRuleModel.countWeekendAsLeave"> (Holidays or Weekend also included.)
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <div *ngIf="isSameDate" class="col-12 pr-0 pl-0 mt-2">
+            <div class="col-3 pt-0 pl-0">
+              <mat-checkbox color="primary" [(ngModel)]="appliedForHalfDay" name="appliedForHalfDay">
+                <strong> Half day?</strong>
+              </mat-checkbox>
+            </div>
+            <div class="col-12 pl-0 pr-0" *ngIf="appliedForHalfDay">
+              <div class="col-12 pl-0 pr-0">
+                <mat-form-field>
+                  <mat-select name="selectHalfForStartDate" placeholder="Select Start Half"
+                    [(ngModel)]="model.startHalf" #selectHalfForStartDate="ngModel" required>
+                    <mat-option [value]="1">First Half</mat-option>
+                    <mat-option [value]="2">Second Half</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="selectHalfForStartDate.invalid">
+                    <span *ngIf="selectHalfForStartDate.errors?.['required']">Select start half.</span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-12 pl-0 pr-0">
+                <mat-form-field>
+                  <mat-select name="selectEndHalf" placeholder="Select End Half" [(ngModel)]="model.endHalf"
+                    #selectEndHalf="ngModel" required>
+                    <mat-option [value]="1" *ngIf="model.startHalf ==1">First Half</mat-option>
+                    <mat-option [value]="2">Second Half</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="selectEndHalf.invalid">
+                    <span *ngIf="selectEndHalf.errors?.['required']" >Select end half.</span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 pl-0 pr-0">
+            <mat-form-field>
+              <textarea matInput name="purpose" placeholder="Purpose" [(ngModel)]="model.purpose" #purpose="ngModel"
+                maxlength="250" required cdkTextareaAutosize></textarea>
+              <mat-error *ngIf="purpose.invalid">
+                <span *ngIf="purpose.errors?.['required']">Purpose is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end" class="pt-3 pb-3">
+        <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+        <button type="submit" mat-raised-button color="primary">
+          <mat-icon>save</mat-icon> Submit
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</section>

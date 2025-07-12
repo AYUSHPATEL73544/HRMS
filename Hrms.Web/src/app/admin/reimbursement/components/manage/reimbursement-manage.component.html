@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="heading font-weight-bold pb-3">Reimbursements</div>
+  </div>
+
+  <mat-card>
+    <section>
+      <div class="col-12">
+        <mat-tab-group mat-stretch-tabs [animationDuration]="0" [selectedIndex]="selectedTabIndex"
+          (selectedIndexChange)="onTableChanged($event)">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Pending</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 0">
+              <app-pending-reimbursement></app-pending-reimbursement>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Logs</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 1">
+              <app-reimbursement-log></app-reimbursement-log>
+            </ng-container>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </section>
+  </mat-card>

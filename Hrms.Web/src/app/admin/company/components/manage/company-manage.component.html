@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="heading font-weight-bold pb-3">Company</div>
+  <mat-card>
+    <section>
+      <div class="col-12">
+        <mat-tab-group mat-stretch-tabs [animationDuration]="0" (selectedTabChange)="onTabChanged($event)">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Overview</strong>
+            </ng-template>
+            <ng-container>
+              <app-company-overview #overview></app-company-overview>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Address</strong>
+            </ng-template>
+            <ng-container>
+              <app-company-address #address></app-company-address>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Department</strong>
+            </ng-template>
+            <ng-container>
+              <app-department-detail #department></app-department-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Designation</strong>
+            </ng-template>
+            <ng-container>
+              <app-designation-detail #designation></app-designation-detail>
+            </ng-container>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </section>
+  </mat-card>
+</div>

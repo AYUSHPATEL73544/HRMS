@@ -1,0 +1,341 @@
+<section *blockUI="'work-detail-blockui'">
+  <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+    <div class="col-12 pb-3">
+      <div class="row">
+        <div class="col-8 pt-3">
+          <p class="sub-heading mb-1">Basic Info</p>
+        </div>
+        <div class="col-4 text-right ">
+          <button mat-icon-button (click)="isBasicInfoEditable = true;"
+            *ngIf="!isWorkInfoEditable && !isBasicInfoEditable && !isWorkHistoryEditable && !isWorkHistoryEditable">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button type="submit" color="primary" *ngIf="isBasicInfoEditable">
+            <mat-icon>check_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancel()" *ngIf="isBasicInfoEditable">
+            <mat-icon> highlight_off</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="col-12" *ngIf="!isBasicInfoEditable">
+      <div class="row">
+        <div class="col-6 mb-3">
+          <mat-label>Employee ID</mat-label>
+          <div class="font-weight-bold pt-1">{{model.code}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Date of Joining</mat-label>
+          <div class="font-weight-bold pt-1">{{dateOfJoining | date}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Probation Period</mat-label>
+          <div class="font-weight-bold pt-1">
+            <div *ngIf="model.probationPeriod > 0">
+              {{model.probationPeriod}}
+            </div>
+          </div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Employee Type</mat-label>
+          <div class="font-weight-bold pt-1">{{employeeType}}</div>
+        </div>
+        
+        <div class="col-6 mb-3">
+          <mat-label>Employee Status</mat-label>
+          <div class="font-weight-bold pt-1">{{status}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Work Experience</mat-label>
+          <div class="font-weight-bold pt-1">{{workExperience}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="isBasicInfoEditable">
+      <div class="form-group row pt-3">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="id" disabled="true" placeholder="Employee Id" [(ngModel)]="model.code" #id="ngModel" required>
+            <mat-error *ngIf="id.invalid">
+              <span *ngIf="id.errors?.['required']">Id is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" name="dateOfJoining" placeholder="Date Of Joining"
+              [(ngModel)]="model.dateOfJoining" #dateOfJoining="ngModel" readonly required>
+            <mat-datepicker-toggle matSuffix [for]="picker">
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="dateOfJoining.invalid">
+              <span *ngIf="dateOfJoining.errors?.['required']">Date of joining is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select matInput name="probation" placeholder="Probation Period (In Days)"
+              [(ngModel)]="model.probationPeriod" #probation="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of probationDropDown">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="probation.invalid">
+              <span *ngIf="probation.errors?.['required']">Probation period is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="type" placeholder="Employee Type" [(ngModel)]="model.employeeType" #type="ngModel"
+              required>
+              <mat-option [value]="item.key" *ngFor="let item of typeDropDown">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="type.invalid">
+              <span *ngIf="type.errors?.['required']">Employee type is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="status" placeholder="Employee Status" [(ngModel)]="model.status" #status="ngModel"
+              (selectionChange)="changeStatus()" required>
+              <mat-option [value]="item.key" *ngFor="let item of statusDropDown">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="status.invalid">
+              <span *ngIf="status.errors?.['required']">Employee status is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!---------------------------------- Work Info ------------------------------------->
+
+    <div class="col-12 pb-3">
+      <div class="row">
+        <div class="col-8 pt-3">
+          <p class="sub-heading mb-1">Work Info</p>
+        </div>
+        <div class="col-4 text-right ">
+          <button mat-icon-button (click)="isWorkInfoEditable = true;"
+            *ngIf="!isWorkInfoEditable && !isBasicInfoEditable && !isWorkHistoryEditable">
+            <mat-icon *ngIf="model.designationName != null">edit</mat-icon>
+            <mat-icon *ngIf="model.designationName == null">add_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button type="submit" color="primary" *ngIf="isWorkInfoEditable">
+            <mat-icon>check_circle_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancel()" *ngIf="isWorkInfoEditable">
+            <mat-icon> highlight_off</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="col-12 pt-3" *ngIf="!isWorkInfoEditable && model.designationName != null">
+      <div class="row">
+        <div class="col-6 mb-3">
+          <mat-label>Designation</mat-label>
+          <div class="font-weight-bold pt-1">{{model.designationName}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Job Title</mat-label>
+          <div class="font-weight-bold pt-1">{{model.designationName}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Department</mat-label>
+          <div class="font-weight-bold pt-1">{{model.departmentName}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12" *ngIf="isWorkInfoEditable">
+      <div class="form-group row pt-3">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="designationId" placeholder="Designation" [(ngModel)]="model.designationId"
+              #designationId="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of designations">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="designationId.invalid">
+              <span *ngIf="designationId.errors?.['required']">Designation required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="departmentId" placeholder="Department" [(ngModel)]="model.departmentId"
+              #departmentId="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of departments">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="departmentId.invalid">
+              <span *ngIf="departmentId.errors?.['required']">Department required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6" *ngIf="startedFrom != null">
+          <mat-form-field>
+            <input matInput [matDatepicker]="from" [min]="model.dateOfJoining" name="startedFrom" placeholder="From"
+              [(ngModel)]="model.startedFrom" #startedFrom="ngModel" required>
+            <mat-datepicker-toggle matSuffix [for]="from">
+            </mat-datepicker-toggle>
+            <mat-datepicker #from></mat-datepicker>
+            <mat-error *ngIf="startedFrom.invalid">
+              <span *ngIf="startedFrom.errors?.['required']">Date is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!---------------------------------- Work History ------------------------------------->
+    <div class="col-12">
+      <div class="row">
+        <div class="col-8 pt-3">
+          <p class="sub-heading mb-1">Work History</p>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="col-12 pb-4" *ngIf="!isWorkHistoryEditable">
+      <table mat-table [dataSource]="workHistoryModel">
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef class="custom-font">
+            <span class="sub-heading-1"><strong>Department</strong></span>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.departmentName}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="designation">
+          <th mat-header-cell *matHeaderCellDef class="custom-font">
+            <span class="sub-heading-1"><strong>Designation</strong></span>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.designationName }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="from">
+          <th mat-header-cell *matHeaderCellDef class="custom-font">
+            <span class="sub-heading-1"><strong>From</strong></span>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.from |date}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="to">
+          <th mat-header-cell *matHeaderCellDef class="custom-font">
+            <span class="sub-heading-1"><strong>To</strong></span>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.to == null">
+              -
+            </div>
+            <div *ngIf="element.to != null">
+              {{element.to | date}}
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="text-right">
+            <span class="sub-heading-1"><strong class="custom-font">Action</strong></span>
+          </th>
+          <td mat-cell *matCellDef="let element" (click)="updateWorkHistory(element.id)" class="text-right">
+            <mat-icon>edit</mat-icon>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <p class="text-muted text-center mt-3" *ngIf="workHistoryModel.length ===0 && isModelLoaded "> No work history
+        found.
+      </p>
+    </div>
+
+    <div class="col-12 pb-3" *ngIf="!isExitEditable && status == 'Inactive'">
+      <div class="row">
+        <div class="col-8 pt-4">
+          <p class="sub-heading mb-1">Exit Info</p>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <!-------------------- Exit info ----------------------------->
+
+    <div class="col-12" *ngIf="!isExitEditable && status == 'Inactive'">
+      <div class="row">
+        <div class="col-6 mb-3">
+          <mat-label>Exit Date</mat-label>
+          <div class="font-weight-bold pt-1">{{model.exitDate | date}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Notice Period</mat-label>
+          <div class="font-weight-bold pt-1" *ngIf="model.noticePeriod === 1">{{model.noticePeriod}} day</div>
+          <div class="font-weight-bold pt-1" *ngIf="model.noticePeriod > 1">{{model.noticePeriod}} days</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Last Working Date</mat-label>
+          <div class="font-weight-bold pt-1">{{model.dateOfLeaving | date}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Exit Note</mat-label>
+          <div class="font-weight-bold pt-1">{{model.note}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-12" *ngIf="isExitEditable">
+      <div class="form-group row">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput [matDatepicker]="exit" name="exitDate" placeholder="Resignation Date"
+              [(ngModel)]="model.exitDate" #exitDate="ngModel">
+            <mat-datepicker-toggle matSuffix [for]="exit">
+            </mat-datepicker-toggle>
+            <mat-datepicker #exit></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="noticePeriod" placeholder="Notice Period" [(ngModel)]="model.noticePeriod"
+            #noticePeriod="ngModel" required>
+            <mat-error *ngIf="noticePeriod.invalid">
+              <span *ngIf="noticePeriod.errors?.['required']">Notice Period is required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput [matDatepicker]="last" name="lastWorkingDay" placeholder="Last Working day"
+              [(ngModel)]="model.dateOfLeaving" #lastWorkingDay="ngModel">
+            <mat-datepicker-toggle matSuffix [for]="last">
+            </mat-datepicker-toggle>
+            <mat-datepicker #last></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <textarea matInput name="resignationNote" placeholder="Resignation Note" [(ngModel)]="model.note"
+              #resignationNote="ngModel" required></textarea>
+            <mat-error *ngIf="resignationNote.invalid">
+              <span *ngIf="resignationNote.errors?.['required']">Resignation Reason is required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-12 pt-3">
+      <div class="text-right">
+        <button mat-stroked-button [routerLink]="['/admin/directory']">
+          <mat-icon>arrow_back_los_new</mat-icon>Back
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

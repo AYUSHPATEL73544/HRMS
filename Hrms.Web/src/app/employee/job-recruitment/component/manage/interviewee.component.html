@@ -1,0 +1,107 @@
+<div class="container-fluid">
+    <div class="heading font-weight-bold pb-3">Job Recruitment List</div>
+    <mat-card>
+        <section *blockUI="'interviewee-blockui'">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-3 col-3">
+                        <mat-form-field>
+                            <input matInput name="filterKey" placeholder="Search" [(ngModel)]="filterModel.filterKey"
+                                #filterKey="ngModel" (keydown.enter)="getList()" maxlength="100" />
+                            <mat-icon matSuffix class="cursor-pointer" (click)="resetFilterKey()"
+                                *ngIf="filterModel.filterKey">
+                                close
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-5 col-5 pt-1 pr-3">
+                        <button mat-raised-button color="primary" class="mr-2" (click)="getList()">
+                            <mat-icon>search</mat-icon> Search
+                        </button>
+                        <button mat-raised-button (click)="resetFilterKey()">
+                            <mat-icon>clear</mat-icon> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-2">
+                <table mat-table matSort [dataSource]="model" matSortActive="legalName" matSortDisableClear
+                    matSortDirection="asc" aria-label="candidate_table">
+                    <ng-container matColumnDef="legalName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <span class="mat-subheading-1"><strong>Name</strong></span>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <a [routerLink]="['/employee/candidate-detail', element.candidateId]">
+                                {{element.legalName}}</a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="phone">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <span class="mat-subheading-1"><strong> Phone</strong></span>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            (+91) {{element.phone | mask: constants.phoneMask}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <span class="mat-subheading-1"><strong> Email</strong></span>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.email}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="dateTime">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <span class="mat-subheading-1"><strong> Date & Time</strong></span>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.scheduleDate |date }} {{element.scheduleTime}}
+
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>
+                            <span class="mat-subheading-1"><strong>Status</strong></span>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-chip-list>
+                                <mat-chip *ngIf="element.eligibleForNextRound !== null && element.eligibleForNextRound === true" color="accent" selected>Approved</mat-chip>
+                                <mat-chip *ngIf="element.eligibleForNextRound !== null && element.eligibleForNextRound === false" color="warn" selected>Rejected</mat-chip>
+                                <mat-chip *ngIf="element.status == '8' && element.eligibleForNextRound === null" selected>Scheduled</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef class="text-right">
+                            <span class="mat-subheading-1"><strong> Action </strong></span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-right">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu" xPosition="before">
+                                <a mat-menu-item
+                                    [routerLink]="['/employee/interviewee-detail', element.candidateId]">Details</a>
+                                    <button mat-menu-item (click)="viewDocument(element.documentDetails.key)">View
+                                        Resume</button>
+                                <!-- <button mat-menu-item>Download Resume</button>
+                                <button mat-menu-item>Change Status</button> -->
+                            </mat-menu>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <p class="text-muted text-center mt-3" *ngIf="isModelLoaded && totalCount == 0">No record
+                    found.
+                </p>
+                <mat-paginator [length]="totalCount" [pageSize]="constants.defaultPageSize"
+                    [pageSizeOptions]="[10, 25, 50, 100 ]" class="pt-3 mt-2">
+                </mat-paginator>
+            </div>
+        </section>
+    </mat-card>
+</div>

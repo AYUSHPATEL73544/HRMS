@@ -1,0 +1,60 @@
+<section *blockUI="'blockui-education-view-detail'">
+    <div class="mt-2 mb-3">
+      <div class="row">
+        <div class="col-10 pb-3">
+          <span class="heading">{{title}}</span>
+        </div>
+        <div class="col-2 text-right">
+          <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+      </div>
+      <div class="col-12">
+        <mat-divider></mat-divider>
+      </div>
+    </div>
+    
+      <div class="row">
+  
+        <div class="col-6">
+          <mat-label>Qualification</mat-label>
+          <div class="font-weight-bold pb-1">{{ model.qualificationTypeName }}</div>
+        </div>
+  
+        <div class="col-6 pl-5">
+          <mat-label>University</mat-label>
+          <div class="font-weight-bold pb-1">{{model.universityName}}</div>
+        </div>
+  
+        <div class="col-6 pt-2">
+          <mat-label>College</mat-label>
+          <div class="font-weight-bold pb-1">{{model.collegeName}}</div>
+  
+        </div>
+  
+        <div class="col-6 pt-2 pl-5">
+          <mat-label>Course Type</mat-label>
+          <div class="font-weight-bold pb-1">{{model.courseTypeName}}</div>
+        </div>
+
+        <div class="col-6 pt-2">
+          <mat-label>Course Name</mat-label>
+          <div class="font-weight-bold pb-1">{{model.courseName}}</div>
+        </div>
+        
+        <div class="col-6 pt-2 pl-5">
+          <mat-label>Stream</mat-label>
+          <div class="font-weight-bold pb-1">{{model.stream}}</div>
+        </div>
+        <div class="col-6 pt-2">
+          <mat-label>Course start</mat-label>
+          <div class="font-weight-bold pb-1">{{model.start}}</div>
+        </div>
+  
+        <div class="col-6 pt-2 pl-5">
+          <mat-label>Course End</mat-label>
+          <div class="font-weight-bold pb-1">{{model.end}}</div>
+        </div>
+      </div>
+   
+  
+  </section>

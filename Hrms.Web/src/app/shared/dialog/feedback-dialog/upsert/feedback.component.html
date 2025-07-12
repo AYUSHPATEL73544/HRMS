@@ -1,0 +1,79 @@
+<section *blockUI="'blockui-feedback'">
+    <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2 pt-4">{{ title }}</span>
+        </div>
+        <div class="col-2" align="end">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+    </div>
+    <div class="row pb-3">
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+        <mat-dialog-content>
+            <div class="form-group row">
+                <div class="col-6 mt-1 mb-2 ">
+                    <mat-label>Candidate Name</mat-label>
+                </div>
+                <div class="font-weight-bold  mt-1 mb-2 col-6">
+                    {{model.legalName}}
+                </div>
+                <div class="col-6  mt-1 mb-2">
+                    <mat-label>Candidate Email</mat-label>
+                </div>
+                <div class="font-weight-bold  mt-1 mb-2 col-6">
+                    {{model.email}}
+                </div>
+                <div class="col-6 mt-1 mb-2">
+                    <mat-label>Rating</mat-label>
+                </div>
+                <div class="col-4  mt-1 mb-2">
+                    <mat-slider name="rating" class="custom-slider" thumbLabel tickInterval="1" min="0" max="10"
+                        [(ngModel)]="selectedRating" #rating="ngModel" (input)="onSliderChange($event)" color="primary">
+                    </mat-slider>
+                </div>
+                <div class="col-2  mt-1 mb-2">
+                    ({{selectedRating}}/10)
+                </div>
+                <div class="col-6">
+                    <mat-label>Eligible For NextRound?</mat-label>
+                </div>
+                <div class="col-6">
+                    <mat-radio-group name="eligibleForNextRound" [(ngModel)]="model.eligibleForNextRound"
+                        #eligibleForNextRound="ngModel" color="primary">
+                        <mat-radio-button [value]="true">Yes</mat-radio-button>
+                        <mat-radio-button [value]="false" class="pl-3">No</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-12 pt-2">
+                    <mat-form-field>
+                        <textarea matInput name="remark" placeholder="Remark" [(ngModel)]="model.remark"
+                            #remark="ngModel" required></textarea>
+                    </mat-form-field>
+                    <mat-error *ngIf="remark.invalid && f.submitted">
+                        Remark is required.
+                    </mat-error>
+                </div>
+            </div>
+
+        </mat-dialog-content>
+        <mat-dialog-actions align="end" class="pt-3 pb-3">
+            <div class="col-12">
+                <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+                    <mat-icon>highlight_off</mat-icon> Cancel
+                </button>
+                <button type="submit" mat-raised-button color="primary">
+                    <mat-icon>save</mat-icon> Submit
+                </button>
+            </div>
+        </mat-dialog-actions>
+    </form>
+    <div class="row pb-3">
+        <div class="col-6">
+
+        </div>
+    </div>
+</section>

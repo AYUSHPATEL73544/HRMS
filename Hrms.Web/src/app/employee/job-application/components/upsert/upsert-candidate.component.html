@@ -1,0 +1,218 @@
+<section *blockUI="'upsert-candidate-blockui'">
+    <div class="row pt-3">
+      <div class="col-10 pb-2">
+        <span class="mat-h2 pt-4" *ngIf="!model.id">Add Candidate</span>
+        <span class="mat-h2 pt-4" *ngIf="model.id">Edit Candidate</span>
+      </div>
+      <div class="col-2 text-right">
+        <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <mat-divider></mat-divider>
+      </div>
+    </div>
+    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+      <div class="form-group row pt-3">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="firstName" [(ngModel)]="model.firstName" placeholder="First Name" #firstName="ngModel"
+              appAlphabetWithSpaceOnly required>
+            <mat-error *ngIf="firstName.invalid">
+              <span *ngIf="firstName.errors?.['required']">First name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="lastName" [(ngModel)]="model.lastName" placeholder="Last Name" #lastName="ngModel"
+              appAlphabetWithSpaceOnly required>
+            <mat-error *ngIf="lastName.invalid">
+              <span *ngIf="lastName.errors?.['required']">Last name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput appEmailAddressOnly name="email" [(ngModel)]="model.email" placeholder="Email"
+              [pattern]="appUtils.emailRegexPattern" #email="ngModel" required>
+            <mat-error *ngIf="email.invalid">
+              <span *ngIf="email.errors?.['required']">Official email is required.</span>
+              <span *ngIf="email.errors?.['pattern']">Invalid email address.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="phoneNumber" [(ngModel)]="model.phone" placeholder="Phone" maxlength="16" minlength="10"
+              [mask]="appUtils.phoneMask" #phoneNumber="ngModel" required>
+            <span matPrefix>+91&nbsp;</span>
+            <mat-error *ngIf="phoneNumber.invalid">
+              <span *ngIf="phoneNumber.errors?.['required']">Phone number is required.</span>
+              <span *ngIf="phoneNumber.errors?.['minlength']">Phone number can not be less than 10
+                digits.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="qualificationType" placeholder="Qualification Type" [(ngModel)]="model.qualificationTypeId"
+              #qualificationType="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of qualifications">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="qualificationType.invalid">
+              <span *ngIf="qualificationType.errors?.['required']">Qualification type is
+                required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="courseType" placeholder="Course Type" [(ngModel)]="model.courseTypeId" #courseType="ngModel"
+              required>
+              <mat-option [value]="item.key" *ngFor="let item of courseTypes">
+                {{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="courseType.invalid">
+              <span *ngIf="courseType.errors?.['required']">Course type is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput appAlphabetWithSpaceOnly [(ngModel)]="model.courseName" name="courseName"
+              placeholder="Course Name" #courseName="ngModel" required>
+            <mat-error *ngIf="courseName.invalid">
+              <span *ngIf="courseName.errors?.['required']">Course name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput appAlphabetWithSpaceOnly [(ngModel)]="model.stream" name="stream" placeholder="Stream"
+              #stream="ngModel" required>
+            <mat-error *ngIf="stream.invalid">
+              <span *ngIf="stream.errors?.['required']">Stream is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="gender" placeholder="Gender" [(ngModel)]="model.gender" #gender="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of genderDropDown">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="gender.invalid">
+              <span *ngIf="gender.errors?.['required']">Gender is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6 pt-3">
+          <mat-checkbox name="isPursuing" [(ngModel)]="model.isPursuing" #isPursuing="ngModel" color="primary"
+            (change)="togglePursuing()">
+            <strong class="custom-font">Currently Pursuing?</strong>
+          </mat-checkbox>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select [disabled]="model.isPursuing" name="passingYear" placeholder="Passing Year"
+              [(ngModel)]="model.passingYear" #passingYear="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of years">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="passingYear.invalid">
+              <span *ngIf="passingYear.errors?.['required']">Passing year is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select placeholder="How did you hear about us" name="marketingChannel"
+              [(ngModel)]="model.marketingChannelType" #marketingChannel="ngModel" required>
+              <mat-option value="LinkedIn">LinkedIn</mat-option>
+              <mat-option value="FaceBook">FaceBook</mat-option>
+              <mat-option value="Instagram">Instagram</mat-option>
+              <mat-option value="Other">Other</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f.submitted && marketingChannel.invalid">
+              How did you hear about us is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="col-6" *ngIf="model.marketingChannelType === 'Other'">
+          <mat-form-field>
+            <input matInput name="other" placeholder="Please Specify" [(ngModel)]="model.other" #other="ngModel"
+              maxlength="100" required />
+            <mat-error *ngIf="f.submitted && other.invalid">
+              Other is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="col-12">
+          <mat-form-field>
+            <mat-chip-list #chipList>
+              <mat-chip *ngFor="let skill of selectedSkills" [removable]="true" (removed)="removeSkill(skill)">
+                {{ skill.value }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <input matInput name="skills" placeholder="Add Skills" [matAutocomplete]="auto" maxlength="100"
+                [formControl]="skillCtrl" [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+                (matChipInputTokenEnd)="addSkill($event)" #chipInput>
+            </mat-chip-list>
+            <mat-hint>Select skills from dropdown or type the name of skill and press enter.</mat-hint>
+          </mat-form-field>
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displaySkill">
+            <mat-option *ngFor="let item of filteredSkills | async" [value]="item.value" (click)="selectSkill(item)">
+              {{ item.value }}
+              <mat-icon *ngIf="selectedOptions.includes(item.value)">check</mat-icon>
+            </mat-option>
+          </mat-autocomplete>
+  
+        </div>
+        <div class="col-12 pt-2">
+          <button type="button" mat-raised-button class="btn-lg" color="primary" matTooltip="Document"
+            (click)="documentElem.click()" *ngIf="!model.documentDetails.id">
+            <mat-icon>cloud_upload</mat-icon> Upload Resume
+          </button>
+          <input type="file" name="document" #document="ngModel" class="d-none" accept="application/pdf,image/*"
+            #documentElem (change)="onFileSelected($event)" [(ngModel)]="model.documentFile"
+            [required]="!model.documentDetails.name">
+          <div class="row pt-3 pl-0">
+            <div *ngIf="model.documentDetails && model.documentDetails.name" class="col-8 pl-0">
+              <a (click)="viewDocument(model.documentDetails.key)"
+                class="link cursor-pointer">{{model.documentDetails.name}}</a>
+              <button type="button" mat-icon-button color="warn" class="col-2 btn-icon" (click)="deleteFile(model.documentDetails.key)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-12">
+            <mat-progress-bar mode="determinate" class="mt-2" [value]="model.documentDetails.fileUploadPercent"
+              *ngIf="model.fileUploadPercent > 0 && model.fileUploadPercent < 100">
+            </mat-progress-bar>
+          </div>
+          <mat-error *ngIf="f.submitted && document.invalid">
+            <span class="mat-small" *ngIf="document.errors?.['required']">
+              Resume is required
+            </span>
+          </mat-error>
+        </div>
+      </div>
+      <div align="end" class="pt-3 pb-4">
+        <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+        <button type="submit" mat-raised-button color="primary">
+          <mat-icon>save</mat-icon> Submit
+        </button>
+      </div>
+    </form>
+  </section>
+  

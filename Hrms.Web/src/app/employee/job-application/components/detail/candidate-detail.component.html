@@ -1,0 +1,240 @@
+<div class="container-fluid">
+    <div class="heading font-weight-bold pb-3">Candidate Details</div>
+    <mat-card>
+        <section *blockUI="'blockui-candidate-detail'">
+            <div class="col-12 mb-3">
+                <div class="row">
+                    <div class="col-9 pl-0">
+                        <span class="heading">Personal Details</span>
+                    </div>
+                    <div class="col-1" *ngIf="model.isShortlisted && model.status === 2">
+                        <mat-checkbox name="hire" [(ngModel)]="isHired" color="primary" (change)="toggleHire($event)"
+                            [disabled]="model.isHired">
+                            <strong class="custom-font" *ngIf="!model.isHired">Hire</strong>
+                            <strong class="custom-font" *ngIf="model.isHired">Hired</strong>
+                        </mat-checkbox>
+                    </div>
+                    <div class="col-2">
+                        <mat-checkbox name="pursuing" [(ngModel)]="isShortlisted" color="primary"
+                            (change)="toggleShortList($event)" [disabled]="model.isShortlisted">
+                            <strong class="custom-font" *ngIf="!model.isShortlisted">Shortlist</strong>
+                            <strong class="custom-font" *ngIf="model.isShortlisted">Shortlisted</strong>
+                        </mat-checkbox>
+                    </div>
+                </div>
+                <div class="col-12 pl-0">
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="font-weight-bold col-2">
+                    <mat-label>Candidate Name:</mat-label>
+                </div>
+                <div class=" pb-1 col-4">
+                    {{ model.firstName}} {{model.lastName}}
+                </div>
+
+                <div class="font-weight-bold col-2">
+                    <mat-label>Candidate Phone:</mat-label>
+                </div>
+                <div class="pb-1 col-4">
+                    (+91) {{model.phone | mask: constants.phoneMask}}
+                </div>
+
+                <div class="font-weight-bold col-2">
+                    <mat-label>Candidate Email:</mat-label>
+                </div>
+                <div class="pb-1 col-4">
+                    {{model.email}}
+                </div>
+
+                <div class="font-weight-bold col-2">
+                    <mat-label>Qualification:</mat-label>
+                </div>
+                <div class="pb-1 col-4">
+                    {{qualification}}
+                </div>
+
+                <div class="font-weight-bold col-2">
+                    <mat-label>Course Name:</mat-label>
+                </div>
+                <div class="pb-1 col-4">
+                    {{model.courseName}}
+                </div>
+
+                <div class="font-weight-bold col-2">
+                    <mat-label>Stream:</mat-label>
+                </div>
+                <div class="pb-1 col-4">
+                    {{model.stream}}
+                </div>
+                <div class="font-weight-bold col-2">
+                    <mat-label>Passing Year:</mat-label>
+                </div>
+                <div class="pb-1 col-4">
+                    {{model.passingYear}}
+                </div>
+                <div class="font-weight-bold col-2">
+                    <mat-label>Is Shortlisted:</mat-label>
+                </div>
+                <div class="pb-1 col-4">
+                    <div *ngIf="model.isShortlisted">Yes</div>
+                    <div *ngIf="!model.isShortlisted">No</div>
+                </div>
+                <div class="font-weight-bold col-2">
+                    <mat-label>Shortlisted Date:</mat-label>
+                </div>
+                <div class="pb-1 col-4">
+                    {{model.shortlistedDate | date}}
+                </div>
+                <div class="font-weight-bold col-2">
+                    <mat-label>How did you hear about us:</mat-label>
+                </div>
+                <div class="pb-1 col-4 mt-4">
+                    {{model.marketingChannel}}
+                </div>
+                <div class="font-weight-bold col-2">
+                    <mat-label *ngIf="model.skillNames.length>1;else skill">Skills:</mat-label>
+                    <ng-template #skill><mat-label >Skill:</mat-label></ng-template>
+                    
+                </div>
+                <div class="pb-1 col-9">
+                    {{model.skillNames}}
+                </div>
+                <div class="font-weight-bold col-2" *ngIf="model.status == 4">
+                    <mat-label>Rejection Reason:</mat-label>
+                </div>
+                <div class="pb-1 col-9" *ngIf="model.status == 4">
+                    {{model.remark}}
+                </div>
+            </div>
+
+            <div class="col-12 mt-4 mb-3">
+                <div class="row">
+                    <div class="col-10 pl-0">
+                        <span class="heading">Interview Details</span>
+                    </div>
+                    <div class="col-2 pb-1" *ngIf="isShortlisted">
+                        <button color="primary" mat-raised-button (click)="scheduleInterview(model.id)"
+                            *ngIf="(interviewModel.length === 0 || eligibleForNextRound) && model.isHired === false && model.status === 2">Schedule
+                            Interview</button>
+                    </div>
+                </div>
+                <div class="col-12 pl-0">
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+            <div class="row mb-3" *ngFor="let item of interviewModel; let last = last">
+                <div class="col-5">
+                    <div class="d-flex">
+                        <div class="font-weight-bold">
+                            <mat-label>Interviewer Name:</mat-label>
+                        </div>
+                        <div class="pb-1 pl-2">
+                            {{item.interviewerName}}
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="font-weight-bold">
+                            <mat-label>Interview Mode:</mat-label>
+                        </div>
+                        <div class=" pb-1 pl-2">
+                            <div *ngIf="item.interviewMode == 1">Online</div>
+                            <div *ngIf="item.interviewMode == 2">Offline</div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="font-weight-bold">
+                            <mat-label>Scheduled Date:</mat-label>
+                        </div>
+                        <div class=" pb-1 pl-2">
+                            {{item.scheduleDate | date}}
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="font-weight-bold">
+                            <mat-label>Rating:</mat-label>
+                        </div>
+                        <div class="pb-1 pl-2">
+                            {{item.rating}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-5 pl-5 ml-5">
+                    <div class="d-flex">
+                        <div class="font-weight-bold pl-2">
+                            <mat-label>Interview Date:</mat-label>
+                        </div>
+                        <div class=" pb-1 pl-2">
+                            {{item.interviewDate | date}}
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="font-weight-bold pl-2">
+                            <mat-label>Interview Type:</mat-label>
+                        </div>
+                        <div class=" pb-1 pl-2">
+                            <div *ngIf="item.interviewType == 1">Technical</div>
+                            <div *ngIf="item.interviewType == 2">HR</div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="font-weight-bold pl-2">
+                            <mat-label>Scheduled Time:</mat-label>
+                        </div>
+                        <div class=" pb-1 pl-2">
+                            {{item.scheduleTime}}
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="font-weight-bold pl-2">
+                            <mat-label>Eligible for Next Round:</mat-label>
+                        </div>
+                        <div class="pb-1 pl-2">
+                            <div *ngIf="item.eligibleForNextRound === true">Yes</div>
+                            <div *ngIf="item.eligibleForNextRound === false">No</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div align="end" class="col-1" *ngIf="last && model.status === 2 && model.isHired === false">
+                    <button mat-raised-button color="primary" (click)="editInterview()">Edit</button>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-1 pl-0">
+                            <span class="font-weight-bold">Feedback:</span>
+                        </div>
+                        <div class="col-8 pb-1 pl-0">
+                            {{item.remark}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pl-0 pt-2" *ngIf="!last">
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+            <p class="text-muted text-center mt-3" *ngIf="interviewModel.length <= 0">No record
+                found.
+            </p>
+            <div class="col-12 pl-0">
+                <mat-divider></mat-divider>
+            </div>
+            <div align="end" class="pt-3 pb-4">
+                <button type="button" mat-stroked-button class="mr-2" color="warn"
+                    *ngIf="model.status != 4 && model.isHired === false" (click)="reject(model.id,4)">
+                    <mat-icon>cancel</mat-icon> Reject
+                </button>
+                <button type="button" mat-stroked-button class="mr-2" *ngIf="!model.isShortlisted && model.status != 4"
+                    color="warn" (click)="delete(model.id,5)">
+                    <mat-icon>delete</mat-icon> Delete
+                </button>
+                <button mat-stroked-button class="ml-2" [routerLink]="['/employee/candidate']">
+                    <mat-icon>arrow_back_los_new</mat-icon>Back
+                </button>
+            </div>
+        </section>
+    </mat-card>
+</div>

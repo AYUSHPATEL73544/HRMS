@@ -1,0 +1,86 @@
+.footer-big {
+    padding: 40px 0;
+}
+.footer-big .footer-widget {
+    margin-bottom: 40px;
+}
+.footer--light {
+    background: #363839;
+}
+.footer-big .footer-menu ul li a,
+.footer-big ul li {
+    color: #bfbfbf;
+}
+.footer-menu--1 ul li a {
+    font-size: 13px;
+    line-height: 20px;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    text-decoration: none;
+    padding: 12px 0;
+    border-bottom: 1px solid #505152;
+    display: block;
+}
+.footer-menu--1 ul li:first-child > a {
+    padding-top: 0px;
+}
+.footer-menu ul li a:hover {
+    color: #d11a17 !important;
+}
+.contact-details li {
+    font-size: 13px;
+    line-height: 20px;
+    color: #8c8989 !important;
+}
+.footer-widget-title {
+    line-height: 13px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #ddd;
+}
+.mini-footer {
+    background-color: #282a2b;
+    text-align: center;
+    padding: 18px 0;
+}
+.mini-footer p {
+    margin: 0;
+    line-height: 20px;
+    font-size: 12px;
+    color: #8c8989;
+}
+.mini-footer p a {
+    color: #bfbfbf;
+}
+.mini-footer p a:hover {
+    color: #d11a17;
+}
+.widget-about p,
+.widget-contact p {
+    color: #8c8989;
+    font-size: 13px;
+    line-height: 20px;
+}
+.copyright-text {
+    max-width: 310px;
+    margin: 0 auto;
+    .icon-social{
+        li{
+            display: inline-block;
+            padding: 15px 10px 0;
+        }
+    }
+}
+.company-logo{
+    width: 50px;
+    height: 50px;
+    margin-bottom:10px;
+
+}
+
+@media (max-width: 991px) {
+    .footer-menu {
+        padding-left: 0;
+    }
+}

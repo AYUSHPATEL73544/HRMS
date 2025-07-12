@@ -1,0 +1,131 @@
+<section *blockUI="'upsert-shortList-blockui'">
+    <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2 pt-4" *ngIf="!model.id">Schedule Interview</span>
+            <span class="mat-h2 pt-4" *ngIf="model.id">Edit Interview Schedule</span>
+        </div>
+        <div class="col-2 text-right">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+        <mat-dialog-content>
+            <div class="form-group row pt-3">
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-select name="interviewMode" placeholder="Interview Mode" [(ngModel)]="model.interviewMode"
+                            #interviewMode="ngModel" required [disabled]="addFeedBack">
+                            <mat-option [value]="item.key" *ngFor="let item of interviewModes">
+                                {{item.value}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="interviewMode.invalid">
+                            <span *ngIf="interviewMode.errors?.['required']">Interview Mode is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-select name="interviewType" placeholder="Interview Type" [(ngModel)]="model.interviewType"
+                            #interviewType="ngModel" [disabled]="addFeedBack" required>
+                            <mat-option [value]="item.key" *ngFor="let item of interviewTypes">
+                                {{item.value}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="interviewType.invalid">
+                            <span *ngIf="interviewType.errors?.['required']">Interview Type is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker" name="scheduleDate" placeholder="Schedule Date"
+                            [min]="createdOn" (dateChange)="changeScheduleDate()" [(ngModel)]="model.scheduleDate" #scheduleDate="ngModel" required
+                            [disabled]="addFeedBack" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="scheduleDate.invalid">
+                            <span *ngIf="scheduleDate.errors?.['required']">Schedule date is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput [ngxMatTimepicker]="ScheduleTime" name="scheduleTime"
+                            placeholder="Schedule Time" [(ngModel)]="model.scheduleTime" #scheduleTime="ngModel"
+                            [disabled]="addFeedBack"  [required]="model.id > 0" readonly>
+                        <ngx-mat-timepicker-toggle matSuffix [for]="ScheduleTime"></ngx-mat-timepicker-toggle>
+                        <ngx-mat-timepicker #ScheduleTime></ngx-mat-timepicker>
+                        <mat-error *ngIf="scheduleTime.invalid">
+                            <span *ngIf="scheduleTime.errors?.['required']">Schedule time is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-select name="interviewerName" placeholder="Interviewer Name"
+                            [(ngModel)]="model.interviewerId" #interviewerName="ngModel" [disabled]="addFeedBack"
+                            required>
+                            <mat-option [value]="item.key" *ngFor="let item of interviewers">
+                                {{item.value}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="interviewerName.invalid">
+                            <span *ngIf="interviewerName.errors?.['required']">Interviewer Name is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6" *ngIf="model.id">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="InterviewDate" name="interviewDate"
+                            [disabled]="!model.scheduleDate"
+                            [required]="model.id > 0" [min]="model.scheduleDate" placeholder="Interview Date"
+                            [(ngModel)]="model.interviewDate" #interviewDate="ngModel">
+                        <mat-datepicker-toggle matSuffix [for]="InterviewDate"></mat-datepicker-toggle>
+                        <mat-datepicker #InterviewDate></mat-datepicker>
+                        <mat-error *ngIf="interviewDate.invalid ">
+                            <span *ngIf="interviewDate.errors?.['required']">Interview date is required.</span>
+                            <!-- <span *ngIf="interviewDate.errors?.['min']">Interview date can not be greater then schedule date.</span> -->
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6" *ngIf="model.id">
+                    <mat-label class="pr-4">Rating</mat-label>
+                    <mat-slider name="rating" class="custom-slider" thumbLabel tickInterval="1" min="0" max="10"
+                        [(ngModel)]="selectedRating" #rating="ngModel" (input)="onSliderChange($event)" color="primary">
+                    </mat-slider>
+                    ({{selectedRating}}/10)
+                </div>
+                <div class="col-6 pt-3" *ngIf="model.id">
+                    <mat-label class="pr-4">Eligible For Next Round?</mat-label>
+                    <mat-radio-group name="eligibleForNextRound" [(ngModel)]="model.eligibleForNextRound"
+                        #eligibleForNextRound="ngModel" color="primary" >
+                        <mat-radio-button [value]="true">Yes</mat-radio-button>
+                        <mat-radio-button [value]="false" class="pl-3">No</mat-radio-button>
+                        <!-- <mat-error *ngIf="eligibleForNextRound.invalid && eligibleForNextRound.errors?.['required'] ">
+                            <span>Eligibl for next round is required.</span>
+                        </mat-error> -->
+                    </mat-radio-group>
+
+                </div>
+                <div class="col-12 pt-2" *ngIf="model.id">
+                    <mat-form-field>
+                        <textarea matInput maxlength="1000" name="remark" placeholder="Remark"
+                            [(ngModel)]="model.remark" #remark="ngModel"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end" class="pt-3 pb-3">
+            <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+                <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button type="submit" mat-raised-button color="primary">
+                <mat-icon>save</mat-icon> Submit
+            </button>
+        </mat-dialog-actions>
+    </form>
+</section>

@@ -1,0 +1,155 @@
+<section *blockUI="'blockui-work'">
+
+  <div class="col-12 pb-3 pt-3">
+    <div class="row">
+      <div class="col-8 pt-3">
+        <p class="sub-heading mb-1">Basic Info</p>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div class="col-12" *ngIf="!isBasicInfoEditable">
+    <div class="row">
+      <div class="col-6 mb-3">
+        <mat-label>Employee ID</mat-label>
+        <div class="font-weight-bold pt-1">{{model.code}}</div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Date of Joining</mat-label>
+        <div class="font-weight-bold pt-1">{{model.dateOfJoining | date}}</div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Probation Period</mat-label>
+        <div class="font-weight-bold pt-1">
+          <div *ngIf="model.probationPeriod > 0">
+            {{model.probationPeriod}}
+          </div>
+
+        </div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Employee Type</mat-label>
+        <div class="font-weight-bold pt-1" *ngIf="model.employeeType == 0">-</div>
+        <div class="font-weight-bold pt-1" *ngIf="model.employeeType !== 0">{{model.type}}</div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Employee Status</mat-label>
+        <div class="font-weight-bold pt-1">{{model.employeeStatus}}</div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Work Experience</mat-label>
+        <div class="font-weight-bold pt-1">{{model.workExperience}} </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="row">
+      <div class="col-8 pt-3">
+        <p class="sub-heading mb-1">Work Info</p>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div class="col-12 pt-3" *ngIf="model.designationName != null || model.departmentName!= null">
+    <div class="row">
+      <div class="col-6 mb-3">
+        <mat-label>Designation</mat-label>
+        <div class="font-weight-bold pt-1">{{model.designationName }}</div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Job Title</mat-label>
+        <div class="font-weight-bold pt-1">{{model.designationName }}</div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Department</mat-label>
+        <div class="font-weight-bold pt-1">{{model.departmentName}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="row">
+      <div class="col-8 pt-3">
+        <p class="sub-heading mb-1">Work History</p>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+  <div class="col-12 pb-4">
+    <table mat-table [dataSource]="workHistoryModel" *ngIf="isModelLoaded">
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef class="custom-font">
+          <span class="sub-heading-1"><strong>Department</strong></span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.departmentName}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="designation">
+        <th mat-header-cell *matHeaderCellDef class="custom-font">
+          <span class="sub-heading-1"><strong>Designation</strong></span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.designationName }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="from">
+        <th mat-header-cell *matHeaderCellDef class="custom-font">
+          <span class="sub-heading-1"><strong>From</strong></span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.from |date}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="to">
+        <th mat-header-cell *matHeaderCellDef class="custom-font">
+          <span class="sub-heading-1"><strong>To</strong></span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="element.to == null">
+            -
+          </div>
+          <div *ngIf="element.to != null">
+            {{element.to | date}}
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <p class="text-muted text-center mt-3" *ngIf="workHistoryModel.length ===0 "> No work history found.
+    </p>
+  </div>
+  <!-- <div class="col-12 pb-3">
+    <div class="row">
+      <div class="col-8 pt-4">
+        <p class="sub-heading mb-1">Exit Info</p>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+
+
+  <div class="col-12" *ngIf="!isExitEditable">
+    <div class="row">
+      <div class="col-6 mb-3">
+        <mat-label>Exit Date</mat-label>
+        <div class="font-weight-bold pt-1">{{model.exitDate | date}}</div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Notice Period</mat-label>
+        <div class="font-weight-bold pt-1"></div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Last Working Date</mat-label>
+        <div class="font-weight-bold pt-1">{{model.dateOfLeaving | date}}</div>
+      </div>
+      <div class="col-6 mb-3">
+        <mat-label>Exit Note</mat-label>
+        <div class="font-weight-bold pt-1">{{model.note}}</div>
+      </div>
+    </div>
+  </div> -->
+</section>

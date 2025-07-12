@@ -1,0 +1,56 @@
+<div class="container-fluid ">
+
+  <div class="row">
+    <div class="heading font-weight-bold pb-3">Leave</div>
+  </div>
+
+  <mat-card>
+    <section>
+      <div class="col-12">
+        <mat-tab-group mat-stretch-tabs [animationDuration]="0" [selectedIndex]="selectedTabIndex"
+          (selectedIndexChange)="onTabChanged($event)">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Pending</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 0">
+              <app-leave-pending-leaves #pending></app-leave-pending-leaves>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Rules</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 1">
+              <app-leave-rule-manage #leaveRule></app-leave-rule-manage>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Balance</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 2">
+              <app-leave-balance #leaveBalance></app-leave-balance>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Assign Rules</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 3">
+              <app-assign-leave-rule-detail #asignLeaveRule></app-assign-leave-rule-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Logs</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 4">
+              <app-leave-logs #logs></app-leave-logs>
+            </ng-container>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </section>
+  </mat-card>
+</div>

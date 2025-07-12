@@ -1,0 +1,58 @@
+<section *blockUI="'asset-assign-blockui'">
+    <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2">Assign Asset</span>
+        </div>
+        <div class="col-2 text-right" (click)="cancel()">
+            <mat-icon class="cursor-pointer">close</mat-icon>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+
+    <div class="col-12 pb-3">
+        <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+            <mat-dialog-content>
+                <div class="form-group row pt-3">
+                    <div class="col-12 pl-0 pr-0">
+                        <mat-form-field>
+                            <mat-select name="employee" placeholder="Employee name" [(ngModel)]="model.employeeId"
+                                #employee="ngModel" required>
+                                <mat-option [value]="item.key" *ngFor="let item of employees "> {{item.value}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="employee.invalid">
+                                <span *ngIf="employee.errors?.['required']">Employee name is required.</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 pl-0 pr-0">
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" name="EffectiveFrom" placeholder="Effective From"
+                              [min]="model.purchaseDate"  [(ngModel)]="model.effectiveFrom" #EffectiveFrom="ngModel" required >
+                            <mat-datepicker-toggle matSuffix [for]="picker">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="EffectiveFrom.invalid">
+                                <span *ngIf="EffectiveFrom.errors?.['required']">Effective from is required.</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </mat-dialog-content>
+            <mat-dialog-actions align="end" class="pt-3 pb-3">
+                <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                </button>
+                <button type="submit" mat-raised-button color="primary">
+                    <mat-icon>save</mat-icon> Submit
+                </button>
+            </mat-dialog-actions>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,37 @@
+<section *blockUI="'employee-blockui'">
+  <div class="row">
+    <div class="col-10 pb-2">
+      <span class="mat-h2 pt-4">Add Note</span>
+    </div>
+    <div class="col-2 text-right">
+      <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate *blockUI="'note-blockUI'">
+    <div class="form-group row pt-3">
+      <div class="col-12">
+        <mat-form-field>
+          <textarea matInput maxlength="500" name="note" [(ngModel)]="model.description" #note="ngModel" placeholder="Note"
+            required></textarea>
+
+          <mat-error *ngIf="note.invalid">
+            <span *ngIf="note.errors?.['required']">Note is required.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div align="end" class="pt-3 pb-3">
+        <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+        <button type="submit" mat-raised-button color="primary">
+          <mat-icon>save</mat-icon> Submit
+        </button>
+      </div>
+  </form>
+</section>

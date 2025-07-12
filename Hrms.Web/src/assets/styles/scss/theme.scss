@@ -1,0 +1,74 @@
+@import "~@angular/material/theming";
+@include mat-core();
+
+$blue-brand: (
+    50: #E3F2FD,
+    100: #BBDEFB,
+    200: #90CAF9,
+    300: #64B5F6,
+    400: #42A5F5,
+    500: #2196F3,
+    600: #1E88E5,
+    700: #1976D2,
+    800: #1565C0,
+    900: #0D47A1,
+    A100: #088CDC,
+    A200: #448AFF,
+    A400: #2979FF,
+    A700: #2962FF,
+    contrast: (
+        50: #000,
+        100: #000,
+        200: #000,
+        300: #000,
+        400: #000,
+        500: #000,
+        600: #000,
+        700: #fff,
+        800: #fff,
+        900: #fff,
+        A100: #fff,
+        A200: #000,
+        A400: #fff,
+        A700: #fff,
+    ),
+);
+
+$green-brand: (
+    50: #74a537,
+    100: #C8E6C9,
+    200: #A5D6A7,
+    300: #81C784,
+    400: #66BB6A,
+    500: #4CAF50,
+    600: #43A047,
+    700: #388E3C,
+    800: #2E7D32,
+    900: #1B5E20,
+    A100: #B9F6CA,
+    A200: #69F0AE,
+    A400: #00E676,
+    A700: #00C853,
+    contrast: (
+        50: #fff,
+        100: #000,
+        200: #000,
+        300: #fff,
+        400: #fff,
+        500: #fff,
+        600: #fff,
+        700: #fff,
+        800: #fff,
+        900: #fff,
+        A100: #000,
+        A200: #000,
+        A400: #fff,
+        A700: #fff,
+    ),
+);
+
+$primary: mat-palette($blue-brand, A100);
+$accent: mat-palette($green-brand, 50);
+
+$theme: mat-light-theme($primary, $accent);
+@include angular-material-theme($theme);

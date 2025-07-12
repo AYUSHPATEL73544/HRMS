@@ -1,0 +1,156 @@
+<mat-drawer-container>
+  <mat-drawer-content>
+    <div class="container-fluid">
+      <div class="heading font-weight-bold pb-3">Directory</div>
+
+      <mat-card>
+        <section *blockUI="'directory-blockui'">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-sm-3 col-12">
+                <mat-form-field>
+                  <input matInput name="filterKey" placeholder="Search People" [(ngModel)]="filterModel.filterKey"
+                    #filterKey="ngModel" (keydown.enter)="getEmployees()" maxlength="100" />
+                  <mat-icon matSuffix class="cursor-pointer" (click)="resetFilterKey()" *ngIf="filterModel.filterKey">
+                    close
+                  </mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-2 pt-4">
+                <mat-checkbox name="inactiveEmployee" [(ngModel)]="showInactive" #inactiveEmployee="ngModel"
+                  color="primary" (change)="onCheckboxChange()">
+                  <strong class="custom-font">Include Inactive</strong>
+                </mat-checkbox>
+              </div>
+              <div class="col-sm-5 col-10 pt-1 pr-3">
+                <button mat-raised-button color="primary" class="mr-2" (click)="searchFilterKey()">
+                  <mat-icon>search</mat-icon> Search
+                </button>
+                <button mat-raised-button (click)="resetFilterKey()">
+                  <mat-icon>clear</mat-icon> Reset
+                </button>
+              </div>
+              <div class="col-2 pb-2 text-right">
+                <button mat-raised-button color="primary" (click)="drawer.toggle()">
+                  Add New
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <table mat-table [dataSource]="model" matSort matSortActive="createdOn" matSortDisableClear
+              matSortDirection="desc">
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <span class="mat-subheading-1"><strong>ID</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <a [routerLink]="['/admin/manager', element.id]">{{
+                    element.code
+                    }}</a>
+                </td>
+              </ng-container>
+    
+              <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <span class="mat-subheading-1"><strong> Name</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.status == 3 ? 'text-gray' : ''">
+                  <span class="username-column">
+                    <img [src]="element.imageUrl" alt="" class="user-image" *ngIf="element.imageUrl!=null;else noImage">
+                    <ng-template #noImage>
+                     <img src="assets/images/placeholder-image.png" alt=""  class="user-image">
+                    </ng-template>&nbsp;
+                    {{element.firstName}} {{element.lastName}}
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <span class="mat-subheading-1"><strong> Department</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.status == 3 ? 'text-gray' : ''">
+                  <div *ngIf="element.department == null">
+                    {{ element.department }}
+                  </div>
+                  <div *ngIf="element.department != null">
+                    {{ element.department }}
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <span class="mat-subheading-1"><strong> Designation</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.status == 3 ? 'text-gray' : ''">
+                  <div *ngIf="element.designation == null">
+                    {{ element.designation }}
+                  </div>
+                  <div *ngIf="element.designation != null">
+                    {{ element.designation }}
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <span class="mat-subheading-1"><strong> Email</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" [ngClass]="element.status == 3 ? 'text-gray' : ''">
+                  {{ element.email }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef class="text-right">
+                  <span class="mat-subheading-1"><strong> Action </strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" class="text-right">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <a mat-menu-item [routerLink]="['/admin/manager', element.id]">Details</a>
+                    <button mat-menu-item [matMenuTriggerFor]="note">
+                      Note
+                    </button>
+                    <button mat-menu-item (click)="resetPassword(element.id)">
+                      Reset Password
+                    </button>
+                    <button mat-menu-item [matMenuTriggerFor]="history">
+                      History
+                    </button>
+                    <!-- <button mat-menu-item (click)="editEmployeeDetail(element.id)">
+                      Edit
+                    </button> -->
+                  </mat-menu>
+                  <mat-menu #note>
+                    <button mat-menu-item (click)="addNote(element.id)">
+                      Add
+                    </button>
+                    <a mat-menu-item [routerLink]="['/admin/manager', element.id]" [queryParams]="{ t: 5 }">View</a>
+                  </mat-menu>
+                  <mat-menu #history>
+                    <a mat-menu-item [routerLink]="['/admin/leave-history', element.id]">Leave
+                    </a>
+                    <a mat-menu-item [routerLink]="['/admin/attendance-history', element.id]">Attendance</a>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <p class="text-muted text-center mt-3" *ngIf="isModelLoaded && model.length <= 0">
+              No record found.
+            </p>
+            <mat-paginator [length]="totalCount" [pageSize]="constants.defaultPageSize"
+              [pageSizeOptions]="[10, 50, 100, 1000]" class="pt-3 mt-2">
+            </mat-paginator>
+          </div>
+        </section>
+      </mat-card>
+    </div>
+  </mat-drawer-content>
+  <mat-drawer #drawer mode="over" position="end" disableClose="true">
+    <app-upsert-employee-directory #upsertComponent (closeDrawer)="closeDrawer()"></app-upsert-employee-directory>
+  </mat-drawer>
+</mat-drawer-container>

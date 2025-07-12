@@ -1,0 +1,52 @@
+<div class="container-fluid  mb-3" *blockUI="'blockui-profile'">
+  <div class="heading font-weight-bold pb-3">Profile</div>
+  <mat-card>
+    <section>
+      <div class="col-12">
+        <mat-tab-group mat-stretch-tabs [animationDuration]="0" [selectedIndex]="selectedTabIndex"
+          (selectedIndexChange)="onTabChanged($event)">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Personal</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 0">
+              <app-personal-info [model]="model" (reloadProfile)="getEmployeeDetail()"></app-personal-info>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Work</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 1">
+              <app-work-info [model]="model" (reloadProfile)="getEmployeeDetail()"></app-work-info>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Team</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 2">
+              <app-team-detail></app-team-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Education</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 3">
+              <app-education-detail></app-education-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Family</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 4">
+              <app-family-detail></app-family-detail>
+            </ng-container>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </section>
+  </mat-card>
+</div>

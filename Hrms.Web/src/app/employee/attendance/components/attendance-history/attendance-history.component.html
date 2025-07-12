@@ -1,0 +1,129 @@
+<div class="container-fluid">
+  <mat-card>
+    <section>
+      <div class="col-12 pb-3">
+        <div class="row">
+          <div class="col-10 pt-2">
+            <p class="heading">Attendance History</p>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="col-12 ">
+        <div class="row">
+          <div class="col-sm-3 col-4">
+            <mat-form-field>
+              <mat-label>Select Date Range</mat-label>
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date" name="startDate" [(ngModel)]="filterModel.startDate"
+                  #startDate="ngModel">
+                <input matEndDate placeholder="End date" name="endDate" [(ngModel)]="filterModel.endDate"
+                  #endDate="ngModel">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-5 col-10 pt-1">
+            <button mat-raised-button color="primary" class="mr-2" (click)="getAttendanceLogList()">
+              <mat-icon>search</mat-icon> Search
+            </button>
+            <button mat-raised-button (click)="resetFilters()">
+              <mat-icon>clear</mat-icon> Reset
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-2" *blockUI="'attendance-history-manage'">
+        <table mat-table [dataSource]="model" matSort matSortActive="date" matSortDisableClear matSortDirection="desc">
+          <ng-container matColumnDef="employeeCode">
+
+            <th mat-header-cell *matHeaderCellDef class="pr-3">
+              <span class="mat-subheading-1"><strong>ID</strong></span>
+            </th>
+            <td mat-cell *matCellDef="let element" class="pl-3 pr-3">
+              {{element.employeeCode}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="pl-3 pr-3">
+              <span class="mat-subheading-1"><strong> Name</strong></span>
+            </th>
+            <td mat-cell *matCellDef="let element" class="pl-3 pr-3">
+              {{element.employeeName}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="pl-3 pr-3">
+              <span class="mat-subheading-1"><strong> Date</strong></span>
+            </th>
+            <td mat-cell *matCellDef="let element" class="pl-3 pr-3">
+              {{element.date | date}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="inTime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="pl-3 pr-3">
+              <span class="mat-subheading-1"><strong> Clock In</strong></span>
+            </th>
+            <td mat-cell *matCellDef="let element" class="pl-3 pr-3">
+              {{element.inTime}}
+
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="outTime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="pl-3 pr-3">
+              <span class="mat-subheading-1"><strong> Clock Out</strong></span>
+            </th>
+            <td mat-cell *matCellDef="let element" class="pl-3 pr-3">
+              {{element.outTime}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="workDuration">
+            <th mat-header-cell *matHeaderCellDef class="pl-3 pr-3">
+              <span class="mat-subheading-1"><strong> Work Duration</strong></span>
+            </th>
+            <td mat-cell *matCellDef="let element" class="pl-3 pr-3">
+              <div *ngIf="element.outTime == null"></div>
+              <div *ngIf="element.outTime != null">
+                {{element.workDuration}}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="detail">
+            <th mat-header-cell *matHeaderCellDef class="pl-3 pr-3">
+              <span class="mat-subheading-1"><strong>Action</strong></span>
+            </th>
+            <td mat-cell *matCellDef="let element" class="pl-3 pr-3">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon *ngIf="!element.note">more_vert</mat-icon>
+                <mat-icon *ngIf="element.note" matBadge="!" matBadgeSize="small"
+                  matBadgeColor="warn">more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <span mat-menu-item (click)="viewNotes(element.id)" *ngIf="element.note">View Note</span>
+                <span mat-menu-item *ngIf="!element.note">No Action Pending</span>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <p class="text-muted text-center mt-3" *ngIf="isModelLoaded && model.length <= 0">
+          No attendance history found.
+        </p>
+      </div>
+      <mat-paginator [length]="totalCount" [pageSize]="constants.defaultPageSize"
+        [pageSizeOptions]="[10, 50, 100, 1000]" class="pt-3 mt-2">
+      </mat-paginator>
+      <div class="col-12 pt-4">
+        <div class="text-right">
+          <button mat-stroked-button [routerLink]="['/employee/attendance']">
+            <mat-icon>arrow_back_los_new</mat-icon>Back
+          </button>
+        </div>
+      </div>
+    </section>
+  </mat-card>
+</div>

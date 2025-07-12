@@ -1,0 +1,95 @@
+<section class="pt-2" *blockUI="'blockui-upsert-family'" >
+    <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2 pt-4" *ngIf="!model.id">Add Family Member</span>
+            <span class="mat-h2 pt-4" *ngIf="model.id">Edit Family Member</span>
+        </div>
+        <div class="col-2 text-right">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+
+    <div class="col-12 pb-3">
+        <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+            <mat-dialog-content>
+                <div class="form-group row pt-3">
+                    <div class="col-6">
+                        <mat-form-field>
+                            <input matInput name="firstName" appAlphabetWithSpaceOnly placeholder="First Name" [(ngModel)]="model.firstName"
+                                #firstName="ngModel" required>
+                            <mat-error *ngIf="firstName.invalid">
+                                <span *ngIf="firstName.errors?.['required']">First name is required.</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <input matInput name="lastName" appAlphabetWithSpaceOnly placeholder="Last Name" [(ngModel)]="model.lastName"
+                                #lastName="ngModel" required>
+                            <mat-error *ngIf="lastName.invalid">
+                                <span *ngIf="lastName.errors?.['required']">Last name is required.</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-select name="relationship" placeholder="Relationship"
+                                [(ngModel)]="model.relationshipId" #relationship="ngModel" required>
+                                <mat-option [value]="item.key"
+                                    *ngFor="let item of realtionships">{{item.value}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="relationship.invalid">
+                                <span *ngIf="relationship.errors?.['required']">Relationship is required.</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" name="dateOfBirth" placeholder="Date Of Birth"
+                                [(ngModel)]="model.dateOfBirth" #dateOfBirth="ngModel" required>
+                            <mat-error *ngIf="dateOfBirth.invalid">
+                                <span *ngIf="dateOfBirth.errors?.['required']">Date of Birth is required.</span>
+                            </mat-error>
+                            <mat-datepicker-toggle matSuffix [for]="picker">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <input matInput name="email" placeholder="Email" [(ngModel)]="model.email" #email="ngModel"
+                            [pattern]="appUtils.emailRegexPattern" required>
+                            <mat-error *ngIf="email.invalid">
+                                <span *ngIf="email.errors?.['required']">Email is required.</span>
+                                <span *ngIf="email.errors?.['pattern']">Invalid email address.</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <input matInput name="phone" placeholder="Phone" [(ngModel)]="model.phone" #phone="ngModel"
+                                required maxlength="16" minlength="10" [mask]="appUtils.phoneMask">
+                            <mat-error *ngIf="phone.invalid">
+                                <span *ngIf="phone.errors?.['required']">Phone number is required.</span>
+                                <span *ngIf="phone.errors?.['minlength']">Phone number cannot be less than 10 digits.</span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-dialog-content>
+            <mat-dialog-actions align="end" class="pt-3 pb-3">
+                <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                </button>
+                <button type="submit" mat-raised-button color="primary">
+                    <mat-icon>save</mat-icon> Submit
+                </button>
+            </mat-dialog-actions>
+        </form>
+    </div>
+</section>

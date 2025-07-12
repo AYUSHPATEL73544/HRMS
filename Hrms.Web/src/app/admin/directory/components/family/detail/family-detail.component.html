@@ -1,0 +1,95 @@
+<div class="pt-3" *blockUI="'family-blockui'">
+    <section>
+        <div class="col-12 pb-2">
+            <div class="row">
+                <div class="col-10">
+                    <p class="sub-heading mb-1">Family Info</p>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-3 col-12">
+                    <mat-form-field>
+                        <input matInput name="filterKey" placeholder="Search Members"
+                            [(ngModel)]="filterModel.filterKey" #filterKey="ngModel"
+                            (keydown.enter)="getFamilyDetails()" maxlength="100" />
+                        <mat-icon matSuffix class="cursor-pointer" (click)="resetFilterKey()"
+                            *ngIf="filterModel.filterKey">
+                            close
+                        </mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-5 col-10 pt-1">
+                    <button mat-raised-button color="primary" class="mr-2" (click)="getFamilyDetails()">
+                        <mat-icon>search</mat-icon> Search
+                    </button>
+                    <button mat-raised-button (click)="resetFilterKey()">
+                        <mat-icon>clear</mat-icon> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-2">
+            <table mat-table [dataSource]="model" matSort matSortActive="firstName" matSortDisableClear
+                matSortDirection="asc">
+                <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="mat-subheading-1"><strong> Name</strong></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.firstName}} {{element.lastName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="relationshipId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="mat-subheading-1"><strong> Relationship</strong></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.relationName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="dateOfBirth">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="mat-subheading-1"><strong> Date Of Birth</strong></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.dateOfBirth}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="mat-subheading-1"><strong> Email</strong></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.email}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="mat-subheading-1"><strong> Phone</strong></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.phone | mask: constants.phoneMask}}
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <p class="text-muted text-center mt-3" *ngIf="isModelLoaded && model.length <= 0">No family members detail
+                found.
+            </p>
+            <mat-paginator [length]="totalCount"  [pageSize]="constants.defaultPageSize" [pageSizeOptions]="[10, 50, 100, 1000]"
+            class="pt-3 mt-2">
+           </mat-paginator>
+
+            
+            <div class="col-12 pt-3">
+                <div class="text-right">
+                    <button mat-stroked-button [routerLink]="['/admin/directory']">
+                        <mat-icon>arrow_back_los_new</mat-icon>Back
+                    </button>
+                </div>
+            </div>
+        </div>

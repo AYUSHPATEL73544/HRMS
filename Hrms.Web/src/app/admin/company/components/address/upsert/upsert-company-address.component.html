@@ -1,0 +1,76 @@
+<section *blockUI="'company-blockui'">
+  <div class="row">
+    <div class="col-10 pb-2">
+      <span class="mat-h2 pt-4" *ngIf="!model.id">Add Company Address</span>
+      <span class="mat-h2 pt-4" *ngIf="model.id">Edit Company Address</span>
+    </div>
+    <div class="col-2 text-right">
+      <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+    <mat-dialog-content>
+      <div class="form-group row pt-3">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="line" placeholder="Address Line 1" [(ngModel)]="line1"
+             maxlength="250" #line="ngModel" required>
+            <mat-error *ngIf="line.invalid">
+              <span *ngIf="line.errors?.['required']">Address is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="line2" placeholder="Address Line 2" [(ngModel)]="line2"
+              maxlength="250" >
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="state" placeholder="State" [(ngModel)]="addressModel.stateId" #state="ngModel"
+              (selectionChange)="loadCities()" required>
+              <mat-option [value]="item.key" *ngFor="let item of states">{{item.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="state.invalid">
+              <span *ngIf="state.errors?.['required']">State name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-select name="city" placeholder="City" [(ngModel)]="addressModel.cityId" #city="ngModel" required>
+              <mat-option [value]="item.key" *ngFor="let item of cities"> {{item.value}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="city.invalid">
+              <span *ngIf="city.errors?.['required']">City name is required.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput name="pinCode" placeholder="Zip Code" [(ngModel)]="addressModel.pinCode" #pinCode="ngModel"
+              maxlength="6" minlength="6" appNumberOnly required>
+            <mat-error *ngIf="pinCode.invalid">
+              <span *ngIf="pinCode.errors?.['required']">Zipcode is required.</span>
+              <span *ngIf="pinCode.errors?.['minlength']">Zipcode can't be less than 6.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" class="pt-3 pb-3">
+      <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+        <mat-icon>cancel</mat-icon> Cancel
+      </button>
+      <button type="submit" mat-raised-button color="primary">
+        <mat-icon>save</mat-icon> Submit
+      </button>
+    </mat-dialog-actions>
+  </form>
+</section>

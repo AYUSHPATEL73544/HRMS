@@ -1,0 +1,45 @@
+<div class="container-fluid mb-3" *blockUI="'blockui-leave-manage'">
+  <div class="heading font-weight-bold pb-3">Leave</div>
+  <mat-card>
+    <section>
+      <div class="col-12">
+        <mat-tab-group mat-stretch-tabs [animationDuration]="0" [selectedIndex]="selectedTabIndex"
+          (selectedIndexChange)="onTabChanged($event)">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Stats</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 0">
+              <app-stats-detail></app-stats-detail>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Logs</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 1">
+              <app-leave-logs></app-leave-logs>
+            </ng-container>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <strong>Rules</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 2">
+              <app-leave-rule></app-leave-rule>
+            </ng-container>
+          </mat-tab>
+          <mat-tab  *ngIf="userRole === constants.Roles.ReportingManager">
+            <ng-template mat-tab-label>
+              <strong>Reportee Logs</strong>
+            </ng-template>
+            <ng-container *ngIf="selectedTabIndex == 3">
+              <app-leave-log-reporting></app-leave-log-reporting>
+            </ng-container>
+          </mat-tab>
+
+        </mat-tab-group>
+      </div>
+    </section>
+  </mat-card>
+</div>

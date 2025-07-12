@@ -1,0 +1,85 @@
+<section *blockUI="'attendance-blockui'">
+    <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2 pt-4" *ngIf="!model.id">Create New Rule</span>
+            <span class="mat-h2 pt-4" *ngIf="model.id">Edit Rule</span>
+        </div>
+        <div class="col-2 text-right">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+        <mat-dialog-content>
+            <div class="form-group row pt-3">
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-select name="year" placeholder="Select Year" appNumberOnly #year year="ngModel" [(ngModel)]="model.year" required>
+                            <mat-option [value]="year.key" *ngFor="let year of years">
+                                {{year.value}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="col-6">
+                    <mat-checkbox name="nextYear" [(ngModel)]="model.forwardToNextYear" #nextYear="ngModel"  color="primary"> 
+                        <strong class="custom-font">Same for Next Year</strong>
+                      </mat-checkbox>
+                </div> -->
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput name="shiftName" appAlphabetWithSpaceOnly placeholder="Shift Name"
+                            [(ngModel)]="model.title" #shiftName="ngModel" required>
+                        <mat-error *ngIf="shiftName.invalid">
+                            <span *ngIf="shiftName.errors?.['required']">Shift name is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-select name="startDay" placeholder="First Day of Week" [(ngModel)]="model.startDay"
+                            #startDay="ngModel" required>
+                            <mat-option [value]="item.key" *ngFor="let item of weekDays">{{item.value}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="startDay.invalid">
+                            <span *ngIf="startDay.errors?.['required']">First day of week is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-select name="endDay" placeholder="Last Day of Week" [(ngModel)]="model.endDay"
+                            #endDay="ngModel" required>
+                            <mat-option [value]="item.key" *ngFor="let item of weekDays">{{item.value}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="endDay.invalid">
+                            <span *ngIf="endDay.errors?.['required']">Last day of week is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <textarea matInput name="description" appAlphabetWithSpaceOnly placeholder="Description"
+                            [(ngModel)]="model.description" #description="ngModel" style="height: 13px;"
+                            required></textarea>
+                        <mat-error *ngIf="description.invalid">
+                            <span *ngIf="description.errors?.['required']">Description is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end" class="pt-3 pb-3">
+            <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+                <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button type="submit" mat-raised-button color="primary">
+                <mat-icon>save</mat-icon> Submit
+            </button>
+        </mat-dialog-actions>
+    </form>
+</section>

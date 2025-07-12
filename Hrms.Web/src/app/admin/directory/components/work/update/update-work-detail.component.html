@@ -1,0 +1,72 @@
+<section *blockUI="'company-blockui'">
+    <div class="row">
+        <div class="col-10 pb-2">
+            <span class="mat-h2 pt-4">Edit Work History</span>
+        </div>
+        <div class="col-2 text-right">
+            <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+        <mat-dialog-content>
+            <div class="form-group row pt-3">
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-select name="designationId" placeholder="Designation" [(ngModel)]="model.designationId"
+                            #designationId="ngModel" required>
+                            <mat-option [value]="item.key" *ngFor="let item of designations">{{item.value}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="designationId.invalid">
+                            <span *ngIf="designationId.errors?.['required']">Designation required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <mat-select name="departmentId" placeholder="Department" [(ngModel)]="model.departmentId"
+                            #departmentId="ngModel" required>
+                            <mat-option [value]="item.key" *ngFor="let item of departments">{{item.value}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="departmentId.invalid">
+                            <span *ngIf="departmentId.errors?.['required']">Department required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="from" [min]="minDate" name="dateOfJoining"
+                            placeholder="From" [(ngModel)]="model.from" #dateOfJoining="ngModel" required>
+                        <mat-datepicker-toggle matSuffix [for]="from">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #from></mat-datepicker>
+                        <mat-error *ngIf="dateOfJoining.invalid">
+                            <span *ngIf="dateOfJoining.errors?.['required']"> Date is required.</span>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="to" [min]="model.from" name="toDate" placeholder="To"
+                            [(ngModel)]="model.to" [disabled]="!model.to" #toDate="ngModel">
+                        <mat-datepicker-toggle matSuffix [for]="to">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #to></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end" class="pt-3 pb-3">
+            <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+                <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button type="submit" mat-raised-button color="primary">
+                <mat-icon>save</mat-icon> Submit
+            </button>
+        </mat-dialog-actions>
+    </form>
+</section>

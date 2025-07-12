@@ -1,0 +1,54 @@
+<div class="pt-3 pb-3" *blockUI="'blockui-employee-attendance-history'">
+    <section>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-sm-2 col-2">
+                    <mat-form-field>
+                        <mat-label>Select Year</mat-label>
+                        <mat-select name="year" placeholder="Year" #year="ngModel" [(ngModel)]="filterModel.year">
+                            <mat-option *ngFor="let year of years" [value]="year.key">{{year.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2 col-2">
+                    <mat-form-field>
+                        <mat-label>Select Month</mat-label>
+                        <mat-select placeholder="Month" name="month" #month="ngModel" [(ngModel)]="filterModel.month">
+                            <mat-option *ngFor="let month of months" [value]="month.key">{{month.value}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-5 col-10 pt-1">
+                    <button mat-raised-button color="primary" class="mr-2" (click)="setFilterOptions()">
+                        <mat-icon>search</mat-icon> Search
+                    </button>
+                    <button mat-raised-button (click)="resetFilter()">
+                        <mat-icon>clear</mat-icon> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mt-2">
+            <div class="row p-3">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="color-label blue mr-2"></span>
+                    <span>Clock In</span>
+                    <span class="color-label yellow ml-3 mr-2"></span>
+                    <span>Clock Out</span>
+                    <span class="color-label green ml-3 mr-2"></span>
+                    <span>Work Duration</span>
+                    <span class="color-label orange ml-3 mr-2"></span>
+                    <span>Holiday</span>
+                    <span class="color-label gray ml-3 mr-2"></span>
+                    <span>Pending Leave/Absent</span>
+                    <span class="color-label red ml-3 mr-2"></span>
+                    <span>Leave</span>
+                </div>
+            </div>
+            <div class="row px-3">
+                <app-calendar-event [selectedYear]="selectedYear" [selectedMonth]="selectedMonth"></app-calendar-event>
+            </div>
+        </div>
+    </section>
+</div>

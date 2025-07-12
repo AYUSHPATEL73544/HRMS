@@ -1,0 +1,114 @@
+<section *blockUI="'blockui-upsert-education'">
+  <div class="mt-2 mb-3">
+    <div class="row">
+      <div class="col-10 pb-3">
+        <span class="heading" *ngIf="!model.id">Add Educational Details</span>
+        <span class="heading" *ngIf="model.id">Edit Educational Details</span>
+
+      </div>
+      <div class="col-2 text-right">
+        <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+      </div>
+    </div>
+    <div class="col-12">
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="col-12 pb-3 pl-0 pr-0">
+      <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+        <div class="form-group row pt-3">
+          <div class="col-12">
+            <mat-form-field>
+              <mat-select name="qualificationType" placeholder="Qualification Type"
+                [(ngModel)]="model.qualificationTypeId" #qualificationType="ngModel" required>
+                <mat-option [value]="item.key" *ngFor="let item of qualifications"> {{item.value}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="qualificationType.invalid">
+                <span *ngIf="qualificationType.errors?.['required']">Qualification type is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field>
+              <input matInput name="universityName" maxlength="250" placeholder="University Name"
+                [(ngModel)]="model.universityName" #universityName="ngModel" required>
+              <mat-error *ngIf="universityName.invalid">
+                <span *ngIf="universityName.errors?.['required']">University name is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field>
+              <input matInput name="collegeName" maxlength="250" placeholder="College Name"
+                [(ngModel)]="model.collegeName" #collegeName="ngModel" required>
+              <mat-error *ngIf="collegeName.invalid">
+                <span *ngIf="collegeName.errors?.['required']">College name is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field>
+              <mat-select name="courseType" placeholder="Course Type" [(ngModel)]="model.courseTypeId"
+                #courseType="ngModel" required>
+                <mat-option [value]="item.key" *ngFor="let item of courseTypes"> {{item.value}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="courseType.invalid">
+                <span *ngIf="courseType.errors?.['required']">Course type is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field>
+              <input matInput name="courseName" maxlength="250" placeholder="Course Name" [(ngModel)]="model.courseName"
+                #courseName="ngModel" required>
+              <mat-error *ngIf="courseName.invalid">
+                <span *ngIf="courseName.errors?.['required']">Course name is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field>
+              <input matInput name="stream" maxlength="250" placeholder="Stream" [(ngModel)]="model.stream"
+                #stream="ngModel" required>
+              <mat-error *ngIf="stream.invalid">
+                <span *ngIf="stream.errors?.['required']">Stream is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" name="courseStartDate" placeholder="Course Start Date"
+                [(ngModel)]="model.start" #courseStartDate="ngModel" readonly required>
+              <mat-datepicker-toggle matSuffix [for]="picker">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="courseStartDate.invalid">
+                <span *ngIf="courseStartDate.errors?.['required']">Course start date is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker1" name="courseEndDate" placeholder="Course End Date"
+                [(ngModel)]="model.end" #courseEndDate="ngModel" readonly required>
+              <mat-datepicker-toggle matSuffix [for]="picker1">
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <mat-error *ngIf="courseEndDate.invalid">
+                <span *ngIf="courseEndDate.errors?.['required']">Course end date is required.</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 text-right mt-4">
+            <button type="button" mat-stroked-button class="mr-2" (click)="cancel()">
+              <mat-icon>cancel</mat-icon> Cancel
+            </button>
+            <button type="submit" mat-raised-button color="primary">
+              <mat-icon>save</mat-icon> Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

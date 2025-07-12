@@ -1,0 +1,140 @@
+<aside class="left-sidebar" *ngIf="sidenavRole === constants.Roles.Admin" aria-label="">
+  <div>
+    <ul id="slide-out" class="sidenav ps ps--theme_default">
+      <li>
+        <ul>
+          <li><a [routerLink]="['/admin/dashboard']" [routerLinkActive]="['active']"><i class="material-icons"
+                [routerLinkActive]="['active']">dashboard</i><span class="hide-menu">Dashboard</span>
+            </a>
+          </li>
+          <li><a [routerLink]="['/admin/company']" [routerLinkActive]="['active']"><i class="material-icons"
+                [routerLinkActive]="['active']">apartment</i><span class="hide-menu">Company</span>
+            </a>
+          </li>
+          <li><a [routerLink]="['/admin/leave']" [routerLinkActive]="['active']"><i class="material-icons"
+                [routerLinkActive]="['active']">celebration</i><span class="hide-menu">Leave</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/admin/attendance']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">work_history</i><span
+                class="hide-menu">Attendance</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/admin/directory']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">people_alt</i><span
+                class="hide-menu">Directory</span>
+            </a>
+          </li>
+
+          <li>
+            <a [routerLink]="['/admin/asset']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">devices</i><span class="hide-menu">Asset</span>
+            </a>
+          </li>
+
+          <li>
+            <a [routerLink]="['/admin/candidate']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">person_add_alt</i><span class="hide-menu">Job
+                Applications</span>
+            </a>
+          </li>
+
+          <li>
+            <a [routerLink]="['/admin/reimbursement']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">account_balance_wallet</i><span
+                class="hide-menu">Reimbursements</span>
+            </a>
+          </li>
+
+          <li>
+            <a (click)="changePassword()">
+              <i class="material-icons">key</i><span class="hide-menu">Change Password</span>
+            </a>
+          </li>
+          <li>
+            <a (click)="logout()">
+              <i class="material-icons">logout</i><span class="hide-menu">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</aside>
+
+<!-- <------------------------------------------Employee Sidenav -------------------------------------------->
+
+<aside class="left-sidebar" *ngIf="sidenavRole !== constants.Roles.Admin" aria-label="">
+  <div>
+    <ul id="slide-out" class="sidenav ps ps--theme_default">
+      <li>
+        <ul>
+          <li><a [routerLink]="['/employee/dashboard']" [routerLinkActive]="['active']"><i class="material-icons"
+                [routerLinkActive]="['active']">dashboard</i><span class="hide-menu">Dashboard</span>
+            </a>
+          </li>
+          <li><a [routerLink]="['/employee/company']" [routerLinkActive]="['active']"><i class="material-icons"
+                [routerLinkActive]="['active']">apartment</i><span class="hide-menu">Company</span>
+            </a>
+          </li>
+          <li><a [routerLink]="['/employee/profile']" [routerLinkActive]="['active']"><i class="material-icons"
+                [routerLinkActive]="['active']">face</i><span class="hide-menu">My Profile</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/employee/attendance']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">work_history</i><span
+                class="hide-menu">Attendance</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/employee/directory']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">people_alt</i><span
+                class="hide-menu">Directory</span>
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/employee/leave']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">celebration</i><span
+                class="hide-menu">Leave</span>
+            </a>
+          </li>
+
+          <li *ngIf="sidenavRole === constants.Roles.Interviewer">
+            <a [routerLink]="['/employee/interviewee']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">person_add_alt</i><span class="hide-menu">Job
+                Recruitment</span>
+            </a>
+          </li>
+
+          <li *ngIf="sidenavRole === constants.Roles.HRManager">
+            <a [routerLink]="['/employee/candidate']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">person_add_alt</i><span class="hide-menu">Job
+                Application</span>
+            </a>
+          </li>
+
+          <li>
+            <a [routerLink]="['/employee/reimbursement']" [routerLinkActive]="['active']">
+              <i class="material-icons" [routerLinkActive]="['active']">account_balance_wallet</i><span
+                class="hide-menu">Reimbursements</span>
+            </a>
+          </li>
+
+          <li>
+            <a (click)="changePassword()">
+              <i class="material-icons">key</i><span class="hide-menu">Change Password</span>
+            </a>
+          </li>
+          <li>
+            <a (click)="logout()">
+              <i class="material-icons">logout</i><span class="hide-menu">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</aside>

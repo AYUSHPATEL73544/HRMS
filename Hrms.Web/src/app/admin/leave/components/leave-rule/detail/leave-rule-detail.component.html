@@ -1,0 +1,379 @@
+<div class="container-fluid">
+  <div class="heading font-weight-bold pb-3">Leave Rule Details</div>
+  <mat-card>
+    <section *blockUI="'levae-blockui'">
+      <form name="form" (ngSubmit)="f.form.valid && submit()" #f="ngForm" novalidate>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-8 pt-3">
+              <p class="heading">{{model.title}}</p>
+              <p>{{model.description}}</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+
+        <div class="col-12 pb-3">
+          <div class="row">
+            <div class="col-8 pt-3">
+              <p class="sub-heading">Leave Count</p>
+            </div>
+            <div class="col-4 text-right pt-2">
+              <button mat-icon-button (click)="isLeaveCountEditable = true;"
+                *ngIf="!isLeaveCountEditable && !isApplicabilityEditable && !isMiscellaneousEditable && !isAccrualEditable">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" *ngIf="isLeaveCountEditable">
+                <mat-icon>check_circle_outline</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="isLeaveCountEditable" (click)="cancel()">
+                <mat-icon> highlight_off</mat-icon>
+              </button>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+        <div class="col-12">
+          <div class="form-group row pt-3" *ngIf="isLeaveCountEditable">
+            <div class="col-6">
+              <mat-form-field>
+                <input matInput appNumberOnly name="leaveInYear" placeholder="Allowed Leave in a Year"
+                  [(ngModel)]="model.maxAllowedInYear" #leaveInYear="ngModel" [maxNumber]="365" required>
+                <mat-error *ngIf="leaveInYear.invalid  && f.submitted">
+                  Please select max allowed leave in a year (Max Leave 365).
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <input matInput appNumberOnly name="leaveInMonth" placeholder="Allowed Leave in a Month"
+                  [(ngModel)]="model.maxAllowedInMonth" #leaveInMonth="ngModel" [minNumber]="1" [maxNumber]="31"
+                  required>
+                <mat-error *ngIf="f.submitted && leaveInMonth.invalid">
+                  Please select max allowed leave in a month (Max Leave 31).
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <input matInput appNumberOnly name="continuousLeaves" placeholder="Continuous Leaves Allowed"
+                  [(ngModel)]="model.maxAllowedContinues" #continuousLeaves="ngModel" [minNumber]="1" [maxNumber]="31"
+                  required>
+                <mat-error *ngIf="f.submitted && continuousLeaves.invalid">
+                  Please select max allowed continuous (Max Leave 31).
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-select name="weekendBtLeave" placeholder="Weekends Between Leave"
+                  [(ngModel)]="model.countWeekendAsLeave" #weekendBtLeave="ngModel" required>
+                  <mat-option [value]="true">Considered</mat-option>
+                  <mat-option [value]="false">Not Considered</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-error *ngIf="f.submitted && weekendBtLeave.invalid">
+                Please select count weekend as leave.
+              </mat-error>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-select name="hldyBtLeave" placeholder="Holiday Between Leave"
+                  [(ngModel)]="model.countHolidayAsLeave" #hldyBtLeave="ngModel" required>
+                  <mat-option [value]="true">Considered</mat-option>
+                  <mat-option [value]="false">Not Considered</mat-option>
+                </mat-select>
+                <mat-error *ngIf="f.submitted && hldyBtLeave.invalid">
+                  Please select count holiday as leave.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row pl-3" *ngIf="!isLeaveCountEditable">
+          <div class="col-6 mb-3">
+            <mat-label>Leaves Allowed in a Year</mat-label>
+            <div class="font-weight-bold pt-1">{{model.maxAllowedInYear}}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Max. Leaves Allowed in a Month</mat-label>
+            <div class="font-weight-bold pt-1">{{model.maxAllowedInMonth}}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Continuous Leaved Allowed</mat-label>
+            <div class="font-weight-bold pt-1">{{model.maxAllowedContinues}}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Weekends Between Leave</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.countWeekendAsLeave">Considered</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.countWeekendAsLeave">Not Considered</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Holiday Between Leave</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.countHolidayAsLeave">Considered</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.countHolidayAsLeave">Not Considered</div>
+          </div>
+        </div>
+        <div class="col-12 pt-3">
+          <div class="pb-3">
+            <div class="row">
+              <div class="col-8 pt-3">
+                <p class="sub-heading">Accrual</p>
+              </div>
+              <div class="col-4 text-right pt-2">
+                <button mat-icon-button (click)=" isAccrualEditable = true;"
+                  *ngIf="!isLeaveCountEditable && !isApplicabilityEditable && !isMiscellaneousEditable && !isAccrualEditable">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" *ngIf="isAccrualEditable">
+                  <mat-icon>check_circle_outline</mat-icon>
+                </button>
+                <button mat-icon-button *ngIf="isAccrualEditable" (click)="cancel()">
+                  <mat-icon> highlight_off</mat-icon>
+                </button>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+          <div class="col-12">
+            <div class="form-group row" *ngIf="isAccrualEditable">
+              <div class="col-6 pl-0">
+                <mat-form-field>
+                  <mat-select name="creditableOnAccrualBasis" placeholder="Creditable on Accrual Basis"
+                    [(ngModel)]="model.creditableOnAccrualBasis" #creditableOnAccrualBasis="ngModel" required>
+                    <mat-option [value]="true">Yes</mat-option>
+                    <mat-option [value]="false">No</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="f.submitted && creditableOnAccrualBasis.invalid">
+                    Please select creditable on accrual basis.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-6">
+                <mat-form-field>
+                  <mat-select name="accrualFrequency" placeholder="Accrual Frequency"
+                    [(ngModel)]="model.accrualFrequency" #accrualFrequency="ngModel" required
+                    [disabled]="model.creditableOnAccrualBasis==false">
+                    <mat-option [value]="item.key"
+                      *ngFor="let item of accrualFrequencyDropDown">{{item.value}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="f.submitted && accrualFrequency.invalid">
+                    Please select accrual frequency.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-6 pl-0">
+                <mat-form-field>
+                  <mat-select name="accrualPeriod" placeholder="Accrual Period" [(ngModel)]="model.accrualPeriod"
+                    #accrualPeriod="ngModel" [disabled]="model.creditableOnAccrualBasis==false" required>
+                    <mat-option [value]="item.key"
+                      *ngFor="let item of accrualPeriodDropDown">{{item.value}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="f.submitted && accrualPeriod.invalid">
+                    Please select accrual period.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="!isAccrualEditable">
+            <div class="col-6 mb-3">
+              <mat-label>Creditable On Accrual Basis</mat-label>
+              <div class="font-weight-bold pt-1" *ngIf="model.creditableOnAccrualBasis">Yes</div>
+              <div class="font-weight-bold pt-1" *ngIf="!model.creditableOnAccrualBasis">No</div>
+            </div>
+            <div class="col-6 mb-3">
+              <mat-label>Accrual Frequency</mat-label>
+              <div class="font-weight-bold pt-1">
+                {{accrualFrequency}}
+              </div>
+            </div>
+            <div class="col-6 mb-3">
+              <mat-label>Accrual Period</mat-label>
+              <div class="font-weight-bold pt-1">
+                {{accrualPeriod}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 pt-3">
+          <div class="pb-3">
+            <div class="row">
+              <div class="col-8 pt-3">
+                <p class="sub-heading">Applicability</p>
+              </div>
+              <div class="col-4 text-right pt-2">
+                <button mat-icon-button (click)="isApplicabilityEditable = true;"
+                  *ngIf="!isLeaveCountEditable && !isApplicabilityEditable && !isMiscellaneousEditable && !isAccrualEditable">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" *ngIf="isApplicabilityEditable">
+                  <mat-icon>check_circle_outline</mat-icon>
+                </button>
+                <button mat-icon-button *ngIf="isApplicabilityEditable" (click)="cancel()">
+                  <mat-icon> highlight_off</mat-icon>
+                </button>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+          <div class="row" *ngIf="isApplicabilityEditable">
+            <div class="col-6">
+              <mat-form-field>
+                <mat-select name="allowedUnderProbation" placeholder="Allowed Under Probation"
+                  [(ngModel)]="model.allowedUnderProbation" #allowedUnderProbation="ngModel" required>
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+                <mat-error *ngIf="f.submitted && allowedUnderProbation.invalid">
+                  Please select allowed under probation.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-select name="negativeLeavesAllowed" placeholder="Negative Leaves Allowed"
+                  [(ngModel)]="model.allowedNegative" #negativeLeavesAllowed="ngModel"
+                  [disabled]="model.allowedUnderProbation || !model.allowedUnderProbation" required>
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+                <mat-error *ngIf="f.submitted && negativeLeavesAllowed.invalid">
+                  Please select negative leaves allowed.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" *ngIf="!isApplicabilityEditable">
+            <div class="col-6 mb-3">
+              <mat-label>Allowed Under Probation</mat-label>
+              <div class="font-weight-bold pt-1" *ngIf="model.allowedUnderProbation">Yes</div>
+              <div class="font-weight-bold pt-1" *ngIf="!model.allowedUnderProbation">No</div>
+            </div>
+            <div class="col-6 mb-3">
+              <mat-label>Negative Leaves Allowed</mat-label>
+              <div class="font-weight-bold pt-1" *ngIf="model.allowedNegative">Yes</div>
+              <div class="font-weight-bold pt-1" *ngIf="!model.allowedNegative">No</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 pt-3">
+          <div class="pb-3">
+            <div class="row">
+              <div class="col-8 pt-3">
+                <p class="sub-heading">Miscellaneous</p>
+              </div>
+              <div class="col-4 text-right pt-2">
+                <button mat-icon-button (click)="isMiscellaneousEditable = true;"
+                  *ngIf="!isLeaveCountEditable && !isApplicabilityEditable && !isMiscellaneousEditable && !isAccrualEditable">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" *ngIf="isMiscellaneousEditable">
+                  <mat-icon>check_circle_outline</mat-icon>
+                </button>
+                <button mat-icon-button (click)="cancel()" *ngIf="isMiscellaneousEditable">
+                  <mat-icon> highlight_off</mat-icon>
+                </button>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+          <div class="row" *ngIf="isMiscellaneousEditable">
+            <div class="col-6">
+              <mat-form-field>
+                <mat-select name="futureDatedLeavesAllowed" placeholder="Future-dated leaves allowed"
+                  [(ngModel)]="model.futureDatedLeavesAllowed" #futureDatedLeavesAllowed="ngModel" required>
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <input matInput appNumberOnly name="futureDatedLeavesAllowedUpTo" [minNumber]="1"
+                  placeholder="Future-dated leaves allowed up to (in Days)." [(ngModel)]="model.futureDatedLeavesAllowedUpTo"
+                  #futureDatedLeavesAllowedUpTo="ngModel" required [disabled]="!model.futureDatedLeavesAllowed">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-select name="backdatedLeavesAllowed" placeholder="Back-dated leaves allowed"
+                  [(ngModel)]="model.allowedBackDatedLeaves" #backdatedLeavesAllowed="ngModel" required>
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <input matInput appNumberOnly name="backdatedLeavesAllowedUpto" [minNumber]="1"
+                  placeholder="Back-dated leaves allowed up to (in Days)." [(ngModel)]="model.maxBackDatedLeavesAllowed"
+                  #backdatedLeavesAllowedUpto="ngModel" required [disabled]="!model.allowedBackDatedLeaves">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-select name="carryForwardEnable" placeholder="Carry Forward Enable"
+                  [(ngModel)]="model.allowedCarryForward" #carryForwardEnable="ngModel" required>
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+                <mat-error *ngIf="f.submitted && carryForwardEnable.invalid">
+                  Please select carry forward enable.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-select name="month" placeholder="Month" [(ngModel)]="model.applyTillNextYear" #month="ngModel"
+                  required>
+                  <mat-option [value]="item.key" *ngFor="let item of months">{{item.value}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="month.invalid">
+                  <span *ngIf="month.errors?.['required']">Month is required.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" *ngIf="!isMiscellaneousEditable">
+            <div class="col-6 mb-3">
+              <mat-label>Future-dated leaves allowed</mat-label>
+              <div class="font-weight-bold pt-1" *ngIf="model.futureDatedLeavesAllowed">Yes</div>
+              <div class="font-weight-bold pt-1" *ngIf="!model.futureDatedLeavesAllowed">No</div>
+            </div>
+            <div class="col-6 mb-3">
+              <mat-label>Future-dated leaves allowed up to</mat-label>
+              <div class="font-weight-bold pt-1">{{model.futureDatedLeavesAllowedUpTo}}</div>
+            </div>
+            <div class="col-6 mb-3">
+              <mat-label>Back-dated leaves allowed</mat-label>
+              <div class="font-weight-bold pt-1" *ngIf="model.allowedBackDatedLeaves">Yes</div>
+              <div class="font-weight-bold pt-1" *ngIf="!model.allowedBackDatedLeaves">No</div>
+            </div>
+            <div class="col-6 mb-3">
+              <mat-label>Back-dated leaves allowed up to</mat-label>
+              <div class="font-weight-bold pt-1">{{model.maxBackDatedLeavesAllowed}}</div>
+            </div>
+            <div class="col-6 mb-3">
+              <mat-label>Carry forward enable</mat-label>
+              <div class="font-weight-bold pt-1" *ngIf="model.allowedCarryForward">Yes</div>
+              <div class="font-weight-bold pt-1" *ngIf="!model.allowedCarryForward">No</div>
+            </div>
+            <div class="col-6 mb-3">
+              <mat-label>Apply leaves for next year till</mat-label>
+              <div class="font-weight-bold pt-1">{{month}}</div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="text-right">
+              <button mat-stroked-button [routerLink]="['/admin/leave']" [queryParams]="{t: 1}">
+                <mat-icon>arrow_back_los_new</mat-icon>Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+  </mat-card>
+</div>

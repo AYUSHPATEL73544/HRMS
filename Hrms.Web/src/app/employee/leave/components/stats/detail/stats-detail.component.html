@@ -1,0 +1,50 @@
+<section class="pt-3 pb-3" *blockUI="'stats-blockui'">
+    <div *ngIf="model.length > 0">
+        <div *ngFor="let element of model">
+            <div class="col-12 pb-3">
+                <div class="row">
+                    <div class="col-8 pt-3">
+                        <p class="sub-heading">{{element.ruleName}}</p>
+                    </div>
+                   
+                </div>
+                <mat-divider></mat-divider>
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-2 mb-3 text-center">
+                        <mat-label>Total</mat-label>
+                        <div class="font-weight-bold pt-1 cursor-pointer">{{element.total}}</div>
+                    </div>
+                    <div class="col-2 mb-3 text-center">
+                        <mat-label>Credited</mat-label>
+                        <div class="font-weight-bold pt-1 cursor-pointer">{{element.credited}}</div>
+                    </div>
+                    <div class="col-2 mb-3 text-center">
+                        <mat-label>Applied</mat-label>
+                        <div class="font-weight-bold pt-1 cursor-pointer">{{element.applied}}</div>
+                    </div>
+                    <div class="col-2 mb-3 text-center">
+                        <mat-label>Penalty</mat-label>
+                        <div class="font-weight-bold pt-1 cursor-pointer"></div>
+                    </div>
+
+                    <div class="col-2 mb-3 text-center">
+                        <button mat-fab color="primary">
+                            {{element.available}}
+                        </button>
+                    </div>
+                    <div  class="col-2 mt-1 mb-3 text-right  ">
+                        <button mat-raised-button color="primary" (click)="addLeave(element.ruleId, element.minDate, element.maxDate)"
+                            *ngIf="element.available !== 0">
+                            Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isModelLoaded && model.length <= 0" class="text-center">
+        No record found.
+    </div>
+</section>

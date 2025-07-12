@@ -1,0 +1,85 @@
+<section class="pt-3 pb-3" *blockUI="'attendance-blockui'">
+    <div class="col-12 pb-3">
+        <div class="row">
+            <div class="col-sm-3 col-12">
+                <mat-form-field>
+                    <input matInput name="filterKey" placeholder="Search Rules" [(ngModel)]="filterModel.filterKey"
+                        #filterKey="ngModel" (keydown.enter)="getAttendanceRuleList()" maxlength="100" />
+                    <mat-icon matSuffix class="cursor-pointer" *ngIf="filterModel.filterKey" (click)="resetFilterKey()">
+                        close
+                    </mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5 col-10 pt-1">
+                <button mat-raised-button color="primary" class="mr-2" (click)="getAttendanceRuleList()">
+                    <mat-icon>search</mat-icon> Search
+                </button>
+                <button mat-raised-button (click)=" resetFilter()">
+                    <mat-icon>clear</mat-icon> Reset
+                </button>
+            </div>
+            <div class="col-4 text-right pl-0 ">
+                <button mat-raised-button color="primary" (click)="addRules()">
+                    Add Rule
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <table mat-table [dataSource]="model" matSort matSortActive="title" matSortDisableClear matSortDirection="asc">
+            <ng-container matColumnDef="title">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1"><strong>Shift Name</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.title}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="StartDay">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1"><strong>First Day of Week</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.weekStartDay}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="EndDay">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <span class="mat-subheading-1"><strong>Last Day of Week</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.weekLastDay}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="peoples">
+                <th mat-header-cell mat-header-cell *matHeaderCellDef>
+                    <span class="mat-subheading-1"><strong>Employees</strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" class="pl-5">
+                    {{element.peoples}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef class="text-right">
+                    <span class="mat-subheading-1"><strong> Action </strong></span>
+                </th>
+                <td mat-cell *matCellDef="let element" class="text-right">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <a mat-menu-item [routerLink]="['/admin/attendance-rule-detail', element.id]">
+                            Details</a>
+                        <button mat-menu-item (click)="editRule(element.id)">Edit</button>
+                        <button mat-menu-item (click)="deleteRule(element.id)">Delete</button>
+                    </mat-menu>
+                </td>
+            </ng-container>
+            <tr mat-header-row mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row mat-row *matRowDef="let row; columns: columns"></tr>
+        </table>
+        <p class="text-muted text-center mt-3" *ngIf="isModelLoaded && model.length <= 0">No attendance rule
+            found.
+        </p>
+    </div>
+</section>

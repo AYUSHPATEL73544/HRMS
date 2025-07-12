@@ -1,0 +1,103 @@
+<section class="pt-3 pb-3">
+  <div class="col-12">
+    <div class="row pb-2">
+      <div class="col-sm-3 col-12">
+        <mat-form-field>
+          <input matInput placeholder="Search by name" maxlength="100" (keydown.enter)="getReimbursements()"
+            #filterKey="ngModel" [(ngModel)]="filterModel.filterKey" name="filterKey">
+          <mat-icon matSuffix (click)="resetFilterKey()" *ngIf="filterModel.filterKey">close</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-5 col-10 pt-1 pr-3">
+        <button mat-raised-button color="primary" class="mr-2" (click)="searchFilterKey()">
+          <mat-icon>search</mat-icon>Search
+        </button>
+        <button mat-raised-button (click)="resetFilterKey()">
+          <mat-icon>clear</mat-icon> Reset
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 mt-2 table-responsive" *blockUI="'reimbursement-log-blockUI'">
+    <table mat-table [dataSource]="model" matSort matSortActive="createdOn" matSortDisableClear matSortDirection="desc"
+      aria-describedby="reimbursement_log">
+
+      <ng-container matColumnDef="employeeName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="mat-subheading-1"><strong>Name</strong></span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <a [routerLink]="['/admin/reimbursement-history', element.employeeId]">{{element.employeeName}} </a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="mat-subheading-1"><strong>Description</strong></span>
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.description}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-right p-0">
+          <span class="mat-subheading-1"> <strong>Amount</strong> </span>
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-right pr-3">
+          {{element.amount | currency : 'INR'}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="pl-5">
+          <span class="mat-subheading-1"> <strong>Date</strong> </span>
+        </th>
+        <td mat-cell *matCellDef="let element" class="pl-5">{{element.date | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="paymentDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="mat-subheading-1">PaymentDate</span>
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.paymentDate | date}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="mat-subheading-1"> <strong>Status</strong> </span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-chip-list>
+            <mat-chip *ngIf="element.status == '6'">Pending</mat-chip>
+            <mat-chip *ngIf="element.status == '7'" color="accent" selected>Approved</mat-chip>
+            <mat-chip *ngIf="element.status == '4'" color="warn" selected>Rejected</mat-chip>
+          </mat-chip-list>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="mat-subheading-1"> <strong>Action</strong> </span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu>
+            <button mat-menu-item (click)="viewReceipt(element.documentDetails.key)">View Receipt</button>
+            <button mat-menu-item [routerLink]="['/admin/reimbursement-history', element.employeeId]">History</button>
+            <button mat-menu-item (click)="approve(element.id, 7)"
+              *ngIf="element.status != 7 && element.status != 4">Approve</button>
+            <button mat-menu-item (click)="delete(element.id, 5)" *ngIf="element.status == 4">Delete</button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <p class="text-muted text-center mt-3" *ngIf="isModelLoaded && model.length <= 0">No record found.</p>
+    <mat-paginator [length]="totalCount" [pageSize]="constants.defaultPageSize" [pageSizeOptions]="[10, 50, 100, 1000]"
+      class="pt-3 mt-2">
+    </mat-paginator>
+  </div>
+</section>

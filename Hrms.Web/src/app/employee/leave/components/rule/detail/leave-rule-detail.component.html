@@ -1,0 +1,148 @@
+<div class="container-fluid" *blockUI="'leave-rule-detail-blockui'">
+  <div class="heading font-weight-bold pb-3">Leave Rule Details</div>
+  <mat-card>
+    <section *blockUI="'levae-blockui'">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-8 pt-3">
+            <p class="heading">{{model.title}}</p>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+
+      <div class="col-12 pb-3">
+        <div class="row">
+          <div class="col-8 pt-3">
+            <p class="sub-heading">Leave Count</p>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+
+      <div class="row pl-3">
+        <div class="col-6 mb-3">
+          <mat-label>Leaves Allowed in a Year</mat-label>
+          <div class="font-weight-bold pt-1">{{model.maxAllowedInYear}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Max. Leaves Allowed in a Month</mat-label>
+          <div class="font-weight-bold pt-1">{{model.maxAllowedInMonth}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Continuous Leaved Allowed</mat-label>
+          <div class="font-weight-bold pt-1">{{model.maxAllowedContinues}}</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Weekends Between Leave</mat-label>
+          <div class="font-weight-bold pt-1" *ngIf="model.countWeekendAsLeave">Considered</div>
+          <div class="font-weight-bold pt-1" *ngIf="!model.countWeekendAsLeave">Not Considered</div>
+        </div>
+        <div class="col-6 mb-3">
+          <mat-label>Holiday Between Leave</mat-label>
+          <div class="font-weight-bold pt-1" *ngIf="model.countHolidayAsLeave">Considered</div>
+          <div class="font-weight-bold pt-1" *ngIf="!model.countHolidayAsLeave">Not Considered</div>
+        </div>
+      </div>
+
+      <div class="col-12 pt-3">
+        <div class="pb-3">
+          <div class="row">
+            <div class="col-8 pt-3">
+              <p class="sub-heading">Accrual</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-3">
+            <mat-label>Creditable On Accrual Basis</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.allowedUnderProbation">Yes</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.allowedUnderProbation">No</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Accrual Frequency</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.allowedNegative">Yes</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.allowedNegative">No</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Accrual Period</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.allowedNegative">Yes</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.allowedNegative">No</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 pt-3">
+        <div class="pb-3">
+          <div class="row">
+            <div class="col-8 pt-3">
+              <p class="sub-heading">Applicability</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-3">
+            <mat-label>Allowed Under Probation</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.allowedUnderProbation">Yes</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.allowedUnderProbation">No</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Negative Leaves Allowed</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.allowedNegative">Yes</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.allowedNegative">No</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 pt-3">
+        <div class="pb-3">
+          <div class="row">
+            <div class="col-8 pt-3">
+              <p class="sub-heading">Miscellaneous</p>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <mat-label>Future-date Leaves Allowed</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.futureDatedLeavesAllowed">Yes</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.futureDatedLeavesAllowed">No</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Future-date Leaves Allowed up to</mat-label>
+            <div class="font-weight-bold pt-1">{{model.futureDatedLeavesAllowedUpTo}}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Backdated Leaves Allowed</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.allowedBackDatedLeaves">Yes</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.allowedBackDatedLeaves">No</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Backdated Leaves Allowed up to</mat-label>
+            <div class="font-weight-bold pt-1">{{model.maxBackDatedLeavesAllowed}}</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Carry forward Enable</mat-label>
+            <div class="font-weight-bold pt-1" *ngIf="model.allowedCarryForward">Yes</div>
+            <div class="font-weight-bold pt-1" *ngIf="!model.allowedCarryForward">No</div>
+          </div>
+          <div class="col-6 mb-3">
+            <mat-label>Apply Leaves for Next Year Till</mat-label>
+            <div class="font-weight-bold pt-1">{{month}}</div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="text-right">
+            <button mat-stroked-button [routerLink]="['/employee/leave']" [queryParams]="{t: 2}">
+              <mat-icon>arrow_back_los_new</mat-icon>Back
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </mat-card>
+</div>

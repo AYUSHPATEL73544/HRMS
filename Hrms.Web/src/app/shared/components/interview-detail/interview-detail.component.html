@@ -1,0 +1,85 @@
+<section *blockUI="'blockui-interview-detail'">
+    <div class="mt-2 mb-3">
+        <div class="row">
+            <div class="col-10 pb-3 pl-0">
+                <span class="heading">{{title}}</span>
+            </div>
+            <div class="col-2 text-right">
+                <mat-icon class="cursor-pointer" (click)="cancel()">close</mat-icon>
+            </div>
+        </div>
+        <div class="col-12 pl-0">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6 pl-0">
+            <mat-label>Interviewer Name:</mat-label>
+        </div>
+        <div class="font-weight-bold pb-1 col-6">{{model.interviewerName}}</div>
+
+        <div class="col-6 pl-0">
+            <mat-label>Interview Mode:</mat-label>
+        </div>
+
+        <div class="font-weight-bold pb-1 col-6">
+            <div *ngIf="model.interviewMode == 1">
+                Offline
+            </div>
+            <div *ngIf="model.interviewMode == 2">
+                Online
+            </div>
+        </div>
+
+        <div class="col-6 pl-0">
+            <mat-label>Interview Type:</mat-label>
+        </div>
+        <div class="font-weight-bold pb-1 col-6">
+            <div *ngIf="model.interviewType == 1">
+                Technical
+            </div>
+            <div *ngIf="model.interviewType == 2">
+                HR
+            </div>
+        </div>
+        <div class="col-6 pl-0">
+            <mat-label>Candidate Name:</mat-label>
+        </div>
+        <div class="font-weight-bold pb-1 col-6">
+            {{ model.firstName}} {{model.lastName}}
+        </div>
+
+        <div class="col-6 pl-0">
+            <mat-label>Candidate Phone:</mat-label>
+        </div>
+        <div class="font-weight-bold pb-1 col-6">(+91){{model.phone | mask: constants.phoneMask}}</div>
+
+
+        <div class="col-6 pl-0">
+            <mat-label>Candidate Email:</mat-label>
+        </div>
+        <div class="font-weight-bold pb-1 col-6">{{model.email}}</div>
+
+        <div class="col-6 pl-0">
+            <mat-label>Course Name:</mat-label>
+        </div>
+
+        <div class="font-weight-bold pb-1 col-6">{{model.courseName}}</div>
+
+        <div class="col-6 pl-0">
+            <mat-label>Stream:</mat-label>
+        </div>
+        <div class="font-weight-bold pb-1 col-6">
+            {{model.stream}}
+        </div>
+        <div class="col-6 pl-0">
+            <mat-label>Skills:</mat-label>
+        </div>
+        <div class="font-weight-bold pb-1 col-6">
+            {{model.skillNames}}
+        </div>
+
+
+    </div>
+</section>
